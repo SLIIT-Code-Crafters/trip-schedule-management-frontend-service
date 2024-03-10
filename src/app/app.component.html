@@ -1,1 +1,7 @@
-<app-landing-page></app-landing-page>
+<ng-container *ngIf="showLandingPage">
+  <app-landing-page></app-landing-page>
+</ng-container>
+
+<router-outlet *ngIf="!showLandingPage"></router-outlet>
+<!-- <app-signup></app-signup>
+<app-signin-page></app-signin-page> -->

@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SigninPageComponent } from './components/signin-page/signin-page.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     AppRoutingModule,
     SigninPageComponent,
     LandingPageComponent,
+    SignupComponent,
   ],
 })
 export class AppModule {}
