@@ -8,16 +8,15 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
-  declarations: [AppComponent, SigninPageComponent],
+  declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-
+    SigninPageComponent,
     LandingPageComponent,
     SignupComponent,
   ],
-  exports: [SigninPageComponent],
 })
 export class AppModule {}
