@@ -17,7 +17,7 @@ phases:
     commands:
       - echo "Build Started.."
       - ng build --configuration=production
-      # - cp -r dist/assets .  # Copy the assets folder to the root directory
+      # - cp -r dist/assets .  # Copy the assets folder to the root directory.
       # - cp dist/* .     
 artifacts:
     files:
