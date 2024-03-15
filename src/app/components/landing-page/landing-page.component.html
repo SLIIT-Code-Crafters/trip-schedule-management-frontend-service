@@ -1,28 +1,50 @@
-<header class="top-bar" style="height: 4.5rem">
-  <div class="container">
-    <img style="width: 100px; height: 100px" src="assets/img/logo.png" />
+<div class="container-fluid main" #carousel style="height: 780px">
+  <header class="top-bar" style="height: 4.5rem">
+    <div class="container" style="margin-top: -1.5rem">
+      <img style="width: 100px; height: 100px" src="assets/img/logo.png" />
 
-    <nav class="navigation">
-      <ul>
-        <li><a routerLink="/about">About</a></li>
-        <li><a routerLink="/contact">Contact</a></li>
-      </ul>
-      <ul class="auth">
-        <li style="margin-right: 1rem" (click)="login()">
-          <a routerLink="/login">Login</a>
-        </li>
-        <li><a routerLink="/register" (click)="register()">Sign Up</a></li>
-      </ul>
-    </nav>
+      <nav class="navigation">
+        <ul>
+          <li><a routerLink="/about">About</a></li>
+          <li><a routerLink="/contact">Contact</a></li>
+        </ul>
+        <ul class="auth">
+          <li style="margin-right: 1rem" (click)="login()">
+            <a routerLink="/login">Login</a>
+          </li>
+          <li><a routerLink="/register" (click)="register()">Sign Up</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div
+    #carousel
+    id="myCarousel"
+    class="carousel carousel-fade slide"
+    data-ride="carousel"
+    data-interval="3000"
+  >
+    <div class="carousel-inner" role="listbox">
+      <div class="item active background a"></div>
+      <div class="item background b"></div>
+      <div class="item background c"></div>
+    </div>
   </div>
-</header>
-<section class="hero">
-  <div class="container">
-    <img src="assets/img/landing.png" />
-    <p class="tagline">Join a community of 100,000+ travelers</p>
-    <a class="btn">Join a Group Trip</a>
+
+  <div class="covertext">
+    <div class="col-lg-10" style="float: none; margin: 0 auto">
+      <h1 class="title">Travel Trek</h1>
+      <h3 class="subtitle">Join a community of 100,000+ travelers</h3>
+    </div>
+    <div class="col-xs-12 explore">
+      <a href="#"
+        ><button type="button" class="btn btn-lg explorebtn">
+          Join the group
+        </button></a
+      >
+    </div>
   </div>
-</section>
+</div>
 
 <section class="featured-trips">
   <div class="container">

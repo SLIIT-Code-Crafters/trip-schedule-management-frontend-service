@@ -1,6 +1,6 @@
 @mixin bg($url) {
   background-attachment: fixed;
-  background-image: url(#{$url});
+  background-image: url("https://images.pexels.com/photos/3512847/pexels-photo-3512847.jpeg?auto=compress&cs=tinysrgb&w=600");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -33,7 +33,7 @@ body {
 }
 body {
   @include bg(
-    "https://static.pexels.com/photos/4827/nature-forest-trees-fog.jpeg"
+    "https://images.pexels.com/photos/3512847/pexels-photo-3512847.jpeg?auto=compress&cs=tinysrgb&w=600"
   );
   color: #0c0d1f;
   position: relative;
@@ -93,6 +93,7 @@ input {
   width: 90%;
   max-width: 1000px;
 }
+
 .login-title {
   background: transparent;
   text-shadow: 0 0 15px rgba(255, 255, 255, 1);

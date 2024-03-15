@@ -65,52 +65,258 @@ header.top-bar {
   }
 }
 
-section.hero {
-  .container {
-    position: relative; /* Enable relative positioning for elements */
+// section.hero {
+//   .container {
+//     position: relative; /* Enable relative positioning for elements */
 
-    img {
-      width: max-content; /* Adjust width as needed */
-      height: auto; /* Maintain aspect ratio */
-      opacity: 0.8; /* Reduce image opacity slightly */
-      transition: opacity 0.2s ease-in-out; /* Smooth transition on hover */
-    }
+//     img {
+//       width: max-content; /* Adjust width as needed */
+//       height: auto; /* Maintain aspect ratio */
+//       opacity: 0.8; /* Reduce image opacity slightly */
+//       transition: opacity 0.2s ease-in-out; /* Smooth transition on hover */
+//     }
 
-    .tagline {
-      position: absolute; /* Position tagline absolutely within container */
-      top: 50%; /* Center tagline vertically */
-      left: 50%; /* Center tagline horizontally */
-      transform: translate(
-        -50%,
-        -50%
-      ); /* Account for absolute positioning offset */
-      color: #fff; /* White text color (adjust for contrast) */
-      font-size: 1.5rem; /* Adjust font size as needed */
-      text-align: center; /* Center text alignment */
-      opacity: 0; /* Initially hide tagline */
-      transition: opacity 0.2s ease-in-out; /* Smooth transition on hover */
-    }
+//     .tagline {
+//       position: absolute; /* Position tagline absolutely within container */
+//       top: 50%; /* Center tagline vertically */
+//       left: 50%; /* Center tagline horizontally */
+//       transform: translate(
+//         -50%,
+//         -50%
+//       ); /* Account for absolute positioning offset */
+//       color: #fff; /* White text color (adjust for contrast) */
+//       font-size: 1.5rem; /* Adjust font size as needed */
+//       text-align: center; /* Center text alignment */
+//       opacity: 0; /* Initially hide tagline */
+//       transition: opacity 0.2s ease-in-out; /* Smooth transition on hover */
+//     }
 
-    .btn {
-      position: absolute;
-      top: 70%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #8796e6;
-      color: #fff;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      opacity: 0.8;
-      transition: opacity 0.2s ease-in-out;
-    }
+//     .btn {
+//       position: absolute;
+//       top: 70%;
+//       left: 50%;
+//       transform: translate(-50%, -50%);
+//       background-color: #8796e6;
+//       color: #fff;
+//       padding: 1rem 2rem;
+//       border: none;
+//       border-radius: 5px;
+//       text-decoration: none;
+//       opacity: 0.8;
+//       transition: opacity 0.2s ease-in-out;
+//     }
 
-    &:hover .tagline,
-    &:hover img {
-      opacity: 1;
-    }
+//     &:hover .tagline,
+//     &:hover img {
+//       opacity: 1;
+//     }
+//   }
+// }
+
+$carousel-control-color: white;
+$carousel-control-width: 15%;
+$carousel-control-opacity: 0.5;
+$carousel-control-hover-opacity: 0.9;
+$carousel-control-transition: opacity 0.15s ease;
+
+$carousel-indicator-width: 30px;
+$carousel-indicator-height: 3px;
+$carousel-indicator-hit-area-height: 10px;
+$carousel-indicator-spacer: 3px;
+$carousel-indicator-opacity: 0.5;
+$carousel-indicator-active-bg: white;
+$carousel-indicator-active-opacity: 1;
+$carousel-indicator-transition: opacity 0.6s ease;
+
+$carousel-caption-width: 70%;
+$carousel-caption-color: white;
+$carousel-caption-padding-y: 1.25rem;
+$carousel-caption-spacer: 1.25rem;
+
+$carousel-control-icon-width: 2rem;
+
+$carousel-control-prev-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$carousel-control-color}'><path d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/></svg>");
+$carousel-control-next-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$carousel-control-color}'><path d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/></svg>");
+
+$carousel-transition-duration: 0.6s;
+$carousel-transition: transform $carousel-transition-duration ease-in-out; // Define transform transition first if using multiple transitions (e.g., `transform 2s ease, opacity .5s ease-out`)
+
+.container-fluid.main {
+  position: relative; /* To make the navbar positions relative to this container */
+  padding: 0;
+}
+
+.navbar-default {
+  background-image: none;
+  background-color: transparent; /* Make the menu become transparent */
+  border-radius: 0px;
+  border: 0;
+  box-shadow: none;
+  padding: 10px;
+  position: absolute; /* Make the menu out of the document flow so it can placed anywhere without disturbing other widgets */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10; /* If you delete this line, your menu link won't be clicked because it is behind the background. Applying this code bring the menu in front of the background */
+}
+
+.navbar-default .navbar-brand {
+  font-family: Verdana;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.navbar-default .navbar-toggle {
+  border-color: transparent;
+}
+
+.navbar-default .navbar-toggle:hover {
+  background-color: transparent;
+}
+
+.navbar-default .navbar-toggle:focus {
+  background-color: transparent;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ffffff;
+}
+
+.carousel .background {
+  background-position: center center;
+  background-size: 100% 100%;
+  background-repeat: repeat;
+  height: 700px;
+}
+
+@media (max-width: 991px) {
+  .carousel .background {
+    background-size: cover; /* To make the background image looks good */
   }
+}
+
+.carousel .background.a {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.pexels.com/photos/1002407/pexels-photo-1002407.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+}
+
+.carousel .background.b {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=600");
+}
+
+.carousel .background.c {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.pexels.com/photos/3512847/pexels-photo-3512847.jpeg?auto=compress&cs=tinysrgb&w=600");
+}
+
+.carousel-fade .carousel-inner .item {
+  opacity: 0;
+  transition: opacity 0.5s; /* The 0.5s describes the duration to make the opacity from 0 to 1 */
+}
+
+.carousel-fade .carousel-inner .active {
+  opacity: 1;
+}
+
+/* CSS Hack to trigger GPU for smooth transition */
+@media all and (transform-3d), (-webkit-transform-3d) {
+  .carousel-fade .carousel-inner > .item.next,
+  .carousel-fade .carousel-inner > .item.active.right {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  .carousel-fade .carousel-inner > .item.prev,
+  .carousel-fade .carousel-inner > .item.active.left {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  .carousel-fade .carousel-inner > .item.next.left,
+  .carousel-fade .carousel-inner > .item.prev.right,
+  .carousel-fade .carousel-inner > .item.active {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+/* CSS Hack to trigger GPU for smooth transition */
+
+.covertext {
+  position: absolute; /* To make the div to be place anywhere. It is out of the document flow */
+  top: 200px; /* The distance between the div with the top of document */
+  left: 0px; /* Make the div full width */
+  right: 0px; /* Make the div full width */
+}
+
+.title {
+  font-family: Verdana;
+  font-weight: 600;
+  font-size: 60px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.subtitle {
+  font-family: Verdana;
+  font-size: 23px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.explore {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.explore .btn-lg,
+.explore .btn-lg:hover {
+  border-radius: 30px;
+  padding: 15px 25px;
+  font-size: 22px;
+  background-image: none;
+  background-color: #ff4000;
+  border-color: #ff4000;
+  color: #ffffff;
+}
+
+.btn,
+.btn:hover {
+  border-radius: 0px;
+  background-image: none;
+  background-color: #ff4000;
+  border-color: #ff4000;
+  color: #ffffff;
+  margin-bottom: 20px;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  color: #ffffff;
+  outline: none;
 }
 
 section {
