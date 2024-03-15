@@ -1,0 +1,50 @@
+<app-header></app-header>
+<div class="page-container">
+  <div class="container sub-container ">
+    <div class="container">
+      <div class="table-action-card">
+        <div class="sub-title">
+          <h4>Trip Categories</h4>
+        </div>
+        <div class="container row table-action-set">
+          <div class="col">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control custom-input" placeholder="Search..." [(ngModel)]="searchText">
+            <button class="btn btn-warning" type="button" (click)="searchItems()"><i class="bi bi-search"></i> Search</button>
+          </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3 adding-btn">
+            <button class="btn btn-primary" type="button" (click)="addCategory()">Add Category</button>
+          </div>
+        </div>
+        </div>
+      </div>
+      <section class="table">
+        <ngx-datatable class="material" tableClass="table table-striped table-bordered table-hover" #catTable
+                       [rows]="viewDataWithFeatures"
+                       [columns]="columnsWithFeatures"
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [footerHeight]="50"
+                       [rowHeight]="'auto'"
+                       [scrollbarH]="true"
+                       [externalPaging]="false"
+                       [externalSorting]="false"
+                       [count]="viewDataWithFeatures.length"
+                       [limit]="5">
+          <ng-template #actionOne let-row="row" let-rowIndex="rowIndex" let-columnValue="columnValue">
+            <div class="actions">
+              <a><i class="bi bi-eye" aria-hidden="true" title="View"
+                    (click)="viewCategory(row)"></i></a>
+              <a><i class="bi bi-pencil-square  text-success" aria-hidden="true" title="Edit"
+                    (click)="updateCategory(row)"></i></a>
+              <a><i class="bi bi-trash3 text-danger" aria-hidden="true" title="Delete"
+                    (click)="removeCategory(row)"></i></a>
+            </div>
+          </ng-template>
+        </ngx-datatable>
+      </section>
+    </div>
+  </div>
+</div>
