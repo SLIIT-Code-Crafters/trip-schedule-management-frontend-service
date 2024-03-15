@@ -4,5 +4,4 @@ export interface TripCategory {
     name: string;
     description: string;
     addedDate: string;
-    // image: string;
 }
