@@ -1,3 +1,9 @@
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons";
+@import "node_modules/ngx-toastr/toastr.css";
+@import "assets/sass/data-table";
+@import "assets/sass/scss_variable";
+
 :root {
   --font-family: Arial, sans-serif;
   --font-size: 16px;
