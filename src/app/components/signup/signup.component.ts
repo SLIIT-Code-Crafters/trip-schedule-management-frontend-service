@@ -1,33 +1,58 @@
+import { AuthServiceService } from './../auth-service.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent {
-  constructor(private fb: FormBuilder) {}
+  public signupForm!: FormGroup;
 
-  signupForm = this.fb.group({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(30),
-    ]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    contactno: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.pattern(
-        '^(?=.*\\d)(?=.*[A-Z])(?=.*?[#?!@$%^&*-])(?=.*[a-z])\\S{8,}$'
-      ),
-    ]),
-  });
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private AuthServiceService: AuthServiceService
+  ) {}
+  ngOnInit(): void {
+    this.signupForm = this.fb.group({
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      contactNumber: ['', Validators.required],
+      password: ['', Validators.required],
+      salutation: ['MS'],
+      role: ['SA'],
+      masterToken: ['MT-SYSADMIN'],
+    });
+  }
 
-  signup() {}
+  signup() {
+    const data = {
+      firstName: this.signupForm.get('firstname')?.value,
+      lastName: this.signupForm.get('lastname')?.value,
+      email: this.signupForm.get('email')?.value,
+      userName: this.signupForm.get('username')?.value,
+      salutation: this.signupForm.get('salutation')?.value,
+      contactNo: this.signupForm.get('contactNumber')?.value,
+      password: this.signupForm.get('password')?.value,
+      role: this.signupForm.get('role')?.value,
+      masterToken: this.signupForm.get('masterToken')?.value,
+    };
+    this.AuthServiceService.signup(data).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }
