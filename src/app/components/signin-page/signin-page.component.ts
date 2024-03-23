@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -8,6 +9,8 @@ import {
 } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthServiceService } from './../auth-service.service';
+import { Router } from '@angular/router';
+import { AppToastService } from 'src/app/services/toastr/toast.service';
 @Component({
   selector: 'app-signin-page',
   standalone: true,
@@ -17,28 +20,53 @@ import { AuthServiceService } from './../auth-service.service';
 })
 export class SigninPageComponent {
   public loginForm!: FormGroup;
+  authtoken: any;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private AuthServiceService: AuthServiceService
+    private router: Router,
+    private AuthServiceService: AuthServiceService,
+    private toastService: AppToastService
   ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      user: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
-  login() {
+  authenticate() {
     const data = {
       email: this.loginForm.get('email')?.value,
       password: this.loginForm.get('password')?.value,
     };
-    this.AuthServiceService.login(data).subscribe((res) => {
-      console.log(res);
+    this.AuthServiceService.authenticate(data).subscribe((res) => {
+      this.authtoken = res.data.token;
+      this.login();
+
+      console.log(this.authtoken);
     });
+  }
+
+  login() {
+    const data = {
+      user: this.loginForm.get('email')?.value,
+      password: this.loginForm.get('password')?.value,
+    };
+
+    this.AuthServiceService.login(this.authtoken, data).subscribe(
+      (res) => {
+        this.router.navigate(['/register']);
+        this.toastService.successMessage('User Login Successfull');
+        console.log(res);
+        console.log(this.authtoken);
+      },
+      (error) => {
+        this.toastService.errorMessage('user login unsuccessfull');
+      }
+    );
   }
 }

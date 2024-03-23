@@ -9,6 +9,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AppToastService } from 'src/app/services/toastr/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -19,11 +21,14 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class SignupComponent {
   public signupForm!: FormGroup;
+  authToken: any;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private AuthServiceService: AuthServiceService
+    private AuthServiceService: AuthServiceService,
+    private toastService: AppToastService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.signupForm = this.fb.group({
@@ -51,8 +56,17 @@ export class SignupComponent {
       role: this.signupForm.get('role')?.value,
       masterToken: this.signupForm.get('masterToken')?.value,
     };
-    this.AuthServiceService.signup(data).subscribe((res) => {
-      console.log(res);
-    });
+    this.AuthServiceService.signup(data).subscribe(
+      (res) => {
+        this.toastService.successMessage('user registered successfully');
+        this.router.navigate(['/login']);
+
+        this.authToken = res.data.authToken;
+        console.log(this.authToken);
+      },
+      (error) => {
+        this.toastService.errorMessage('user registration unsuccessful');
+      }
+    );
   }
 }

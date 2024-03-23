@@ -11,7 +11,7 @@
     <div class="registration">Need an Account? <a href="#">Sign Up</a>.</div>
     <form [formGroup]="loginForm">
       <label for="login" class="login">
-        <input formControlName="username" type="text" placeholder="Username" />
+        <input formControlName="user" type="text" placeholder="Username" />
       </label>
       <label for="login" class="login">
         <input formControlName="email" type="text" placeholder="email" />
@@ -24,7 +24,9 @@
           placeholder="Password"
         />
       </label>
-      <button class="button" type="submit" (click)="login()">Sign in</button>
+      <button class="button" type="submit" (click)="authenticate()">
+        Sign in
+      </button>
     </form>
     <div class="lost-passwd">
       <a href="#">Forgot your password?</a>

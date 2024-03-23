@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -21,8 +21,11 @@ export class AuthServiceService {
     return this.http.post(url, data);
   }
 
-  login(data: any): Observable<any> {
+  login(token: any, data: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Token: `${token}`,
+    });
     const url = `${this.environment}api/v1/private/users/login?requestId=userlog`;
-    return this.http.post(url, data);
+    return this.http.post(url, data, { headers });
   }
 }
