@@ -12,7 +12,7 @@ export class AuthServiceService {
   constructor(private http: HttpClient) {}
 
   signup(data: any): Observable<any> {
-    const url = `https://fohtljhhuc.execute-api.ap-southeast-1.amazonaws.com/prod/api/v1/private/auth/register?requestId=userreg`;
+    const url = `${this.environment}api/v1/private/auth/register?requestId=userreg`;
     return this.http.post(url, data);
   }
 
@@ -23,7 +23,7 @@ export class AuthServiceService {
 
   login(token: any, data: any): Observable<any> {
     const headers = new HttpHeaders({
-      Token: `${token}`,
+      Authorization: `Bearer ${token}`,
     });
     const url = `${this.environment}api/v1/private/users/login?requestId=userlog`;
     return this.http.post(url, data, { headers });
