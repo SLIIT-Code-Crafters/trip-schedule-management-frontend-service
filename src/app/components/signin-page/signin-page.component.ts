@@ -32,7 +32,7 @@ export class SigninPageComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      user: ['', Validators.required],
+      user: [''],
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
