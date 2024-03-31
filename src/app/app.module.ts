@@ -1,13 +1,15 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {SigninPageComponent} from './components/signin-page/signin-page.component';
-import {LandingPageComponent} from './components/landing-page/landing-page.component';
-import {SignupComponent} from './components/signup/signup.component';
-import {ToastrModule} from "ngx-toastr";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { SigninPageComponent } from './components/signin-page/signin-page.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +17,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     SigninPageComponent,
     LandingPageComponent,
@@ -22,7 +26,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
-      closeButton: true
+      closeButton: true,
     }),
   ],
 })

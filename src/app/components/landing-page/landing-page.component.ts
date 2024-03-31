@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Router, RouterModule} from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -10,9 +10,7 @@ import {Router, RouterModule} from '@angular/router';
   styleUrls: ['./landing-page.component.scss'],
 })
 export class LandingPageComponent {
-  constructor(private router: Router) {
-    console.log('as', this.router.config);
-  }
+  constructor(private router: Router) {}
   focus: any;
   focus1: any;
 
@@ -22,5 +20,8 @@ export class LandingPageComponent {
 
   register(): void {
     this.router.navigate(['/register']);
+  }
+  profile() {
+    this.router.navigate(['/profile']);
   }
 }

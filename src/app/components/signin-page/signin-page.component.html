@@ -8,15 +8,25 @@
     <div class="avatar">
       <!--       <img src="https://68.media.tumblr.com/avatar_8671f0f36a5f_128.png" alt="" /> -->
     </div>
-    <div class="registration">Need an Account? <a href="#">Sing Up</a>.</div>
-    <form action="" method="POST">
+    <div class="registration">Need an Account? <a href="#">Sign Up</a>.</div>
+    <form [formGroup]="loginForm">
       <label for="login" class="login">
-        <input id="login" type="text" placeholder="Username" />
+        <input formControlName="user" type="text" placeholder="Username" />
+      </label>
+      <label for="login" class="login">
+        <input formControlName="email" type="text" placeholder="email" />
       </label>
       <label for="passwd" class="passwd">
-        <input id="passwd" type="password" placeholder="Password" />
+        <input
+          id="passwd"
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+        />
       </label>
-      <button class="button" type="submit">Sign In</button>
+      <button class="button" type="submit" (click)="authenticate()">
+        Sign in
+      </button>
     </form>
     <div class="lost-passwd">
       <a href="#">Forgot your password?</a>
