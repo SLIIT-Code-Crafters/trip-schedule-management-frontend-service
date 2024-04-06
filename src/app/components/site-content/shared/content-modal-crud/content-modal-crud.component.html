@@ -1,0 +1,106 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">{{modalLabel}} Site content</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cross-click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="modalForm">
+      <div class="row mb-3 single-row">
+        <label for="inputId" class="form-label">ID</label>
+        <input type="text" class="form-control custom-input" id="inputId" formControlName="id" name="id" maxlength="200"
+               [ngClass]="(getFormId?.touched && !getFormId?.disabled)?(getFormId?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputIdFeedback" *ngIf="getFormId?.errors?.['required']">ID is Required</div>
+      </div>
+      <div class="row mb-3 single-row">
+        <label for="inputTitle" class="form-label">Title</label>
+        <input type="text" class="form-control custom-input" id="inputTitle" name="title" formControlName="title"
+               maxlength="200"
+               [ngClass]="(getFormTitle?.touched && !getFormTitle?.disabled)?(getFormTitle?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputTitleFeedback" *ngIf="getFormTitle?.errors?.['required']">Title is
+          Required
+        </div>
+      </div>
+      <div class="row mb-3 single-row">
+        <label for="inputDescription" class="form-label">Description</label>
+        <textarea rows="3" class="form-control custom-input" id="inputDescription" name="description"
+                  formControlName="description"
+                  [ngClass]="(getFormDescription?.touched && !getFormDescription?.disabled)?(getFormDescription?.valid)?'is-valid':'is-invalid':''"></textarea>
+        <div class="invalid-feedback" id="inputDescriptionFeedback" *ngIf="getFormDescription?.errors?.['required']">
+          Description is Required
+        </div>
+      </div>
+      <div class="row mb-3 single-row">
+        <label for="formFile" class="form-label">Upload Media</label>
+          <input class="form-control" type="file" id="formFile" [disabled]="(openedTask == VIEW_TASK)" (change)="fileChangeFileEvent($event)">
+      </div>
+      <!--      <div class="d-flex justify-content-between align-items-center">-->
+      <!--        <div class="upload-media-label" *ngIf="true">image.jpg</div>-->
+      <!--        <button type="button" class="btn btn-primary cuz-blue-btn custom-button"> Upload Media</button>-->
+      <!--      </div>-->
+      <hr>
+      <div class="row mb-3 single-row">
+        <label for="inputSearchEngineTxt" class="form-label">Search Engine Text</label>
+        <input type="text" class="form-control custom-input" id="inputSearchEngineTxt" name="searchText"
+               formControlName="searchText" maxlength="200"
+               [ngClass]="(getFormSearchText?.touched && !getFormSearchText?.disabled)?(getFormSearchText?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputSearchEngineTxtFeedback" *ngIf="getFormSearchText?.errors?.['required']">
+          Search Engine Text is Required
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="inputFromDate" class="form-label">Display From Date</label>
+            <input type="date" class="form-control custom-input" id="inputFromDate" name="fromDate"
+                   formControlName="fromDate"
+                   [min]="minDateFromDate"
+                   [ngClass]="(getFormFromDate?.touched && !getFormFromDate?.disabled)?(getFormFromDate?.valid)?'is-valid':'is-invalid':''">
+            <div class="invalid-feedback" id="inputFromDateFeedback" *ngIf="getFormFromDate?.errors?.['required']">From
+              Date is Required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="inputToDate" class="form-label">Display To Date</label>
+            <input type="date" class="form-control custom-input" id="inputToDate" name="toDate" formControlName="toDate"
+                   [min]="minDateToDate"
+                   [ngClass]="(getFormToDate?.touched && !getFormToDate?.disabled)?(getFormToDate?.valid)?'is-valid':'is-invalid':''">
+            <div class="invalid-feedback" id="inputToDateFeedback" *ngIf="getFormToDate?.errors?.['required']">To Date
+              is Required
+            </div>
+            <div class="invalid-feedback" id="inputToDateFeedback2"
+                 *ngIf="getFormToDate?.errors?.['toDateLessThanFromDate']">To Date must be greater than from date
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+          <div class="col-md-6"> -->
+      <div class="row mb-3 single-row">
+        <label for="inputDisplayNo" class="form-label">No of Display per Day</label>
+        <input type="number" min="0" class="form-control custom-input" id="inputDisplayNo" name="noOfDay"
+               formControlName="noOfDay"
+               [ngClass]="(getFormNoOfDay?.touched && !getFormNoOfDay?.disabled)?(getFormNoOfDay?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputDisplayNoFeedback" *ngIf="getFormNoOfDay?.errors?.['required']">No of
+          Display per Day is Required
+        </div>
+        <div class="invalid-feedback" id="inputDisplayNoFeedback2" *ngIf="getFormNoOfDay?.errors?.['pattern']">No of
+          Display per Day must contain only numbers
+        </div>
+      </div>
+      <!-- </div>
+  </div> -->
+
+      <div class="modal-footer" *ngIf="(openedTask == ADD_TASK || openedTask == UPDATE_TASK);else empty_footer;">
+        <button type="button" class="btn btn-primary cuz-blue-btn px-4 w-25 custom-button-green" (click)="submitForm()">
+          Publish
+        </button>
+      </div>
+      <ng-template #empty_footer>
+        <div class="modal-footer" ></div>
+      </ng-template>
+    </form>
+  </div>
+</div>
