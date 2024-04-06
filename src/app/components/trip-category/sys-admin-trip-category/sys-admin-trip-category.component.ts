@@ -7,8 +7,9 @@ import {ModalCrudComponent} from "../shared/modal-crud/modal-crud.component";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {NgxDatatableModule} from "@swimlane/ngx-datatable";
-import {HeaderComponent} from "../shared/header/header.component";
 import {DatatableComponent} from "@swimlane/ngx-datatable/lib/components/datatable.component";
+import {ADD_TASK, UPDATE_TASK, VIEW_TASK} from "../../../utility/common/common-constant";
+import {HeaderComponent} from "../../shared/header/header.component";
 
 @Component({
   selector: 'app-sys-admin-trip-category',
@@ -28,9 +29,6 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
   @ViewChild('actionOne', {static: true}) actionOne: TemplateRef<any> | undefined;
 
   private modalRef: NgbModalRef|undefined;
-  private readonly ADD_TASK: string = 'ADD';
-  private readonly UPDATE_TASK: string = 'UPDATE';
-  private readonly VIEW_TASK: string = 'VIEW';
 
   protected columnsWithFeatures: any;
   private dataWithFeatures: TripCategory[] = [];
@@ -59,13 +57,13 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
   private _setTableFeatures() {
     this.columnsWithFeatures = [
       {prop: 'id', name: "ID", width: 20, sortable: true},
-      {name: "CODE", width: 40, sortable: true},
-      {name: 'NAME', width: 120, sortable: true},
-      {name: 'DESCRIPTION', sortable: false},
+      {name: "CODE", width: 70, sortable: true},
+      {name: 'NAME', width: 140, sortable: true},
+      {name: 'DESCRIPTION', width: 170, sortable: false},
       {name: 'ADDED DATE', width: 100, sortable: true},
       {
         prop: 'action',
-        name: 'Action',
+        name: 'ACTION',
         sortable: true,
         cellTemplate: this.actionOne,
         frozenLeft: false,
@@ -131,15 +129,15 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
   }
 
   addCategory() {
-    this._openModel(this.ADD_TASK, null);
+    this._openModel(ADD_TASK, null);
   }
 
   viewCategory(rowData: TripCategory) {
-    this._openModel(this.VIEW_TASK, rowData);
+    this._openModel(VIEW_TASK, rowData);
   }
 
   updateCategory(rowData: TripCategory) {
-    this._openModel(this.UPDATE_TASK, rowData);
+    this._openModel(UPDATE_TASK, rowData);
   }
 
 
@@ -150,9 +148,9 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.open(DeleteModalComponent, {centered: true, backdrop: false});
     this.modalRef.result.then(result => {
       if (result == 'remove-it') {
-        const index = this.dataWithFeatures.findIndex(item => item.code === rowData.code);
+        const index = this.dataWithFeatures.findIndex(item => item.id === rowData.id);
         if (index !== -1) {
-          this.dataWithFeatures = [...this.dataWithFeatures];
+          this.dataWithFeatures.splice(index, 1);
           this._updateLocalStorage();
           this.toastService.successMessage('Category was deleted successfully')
         }
@@ -169,16 +167,16 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.open(ModalCrudComponent, {centered: true, backdrop: false});
     this.modalRef.componentInstance.openedTask = task;
     this.modalRef.componentInstance.data = data;
-    if (task == this.ADD_TASK || this.UPDATE_TASK) {
+    if (task == ADD_TASK || UPDATE_TASK) {
       this.modalRef.componentInstance.passEntry.subscribe((trip: TripCategory | null) => {
-        if (task == this.ADD_TASK) {
+        if (task == ADD_TASK) {
           if (trip) {
             this.dataWithFeatures.push(trip);
             this.modalRef?.close();
             this._updateLocalStorage();
             this.toastService.successMessage('Category was added successfully')
           }
-        } else if (task == this.UPDATE_TASK) {
+        } else if (task == UPDATE_TASK) {
           this.dataWithFeatures = this._updateDataList(this.dataWithFeatures, trip!)
           this.modalRef?.close();
           this._updateLocalStorage();
@@ -198,7 +196,8 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
 
   searchItems() {
     if (this.searchText) {
-      const filteredItems = this.dataWithFeatures.filter(item => item.code.includes(this.searchText.trim()));
+      const filteredItems = this.dataWithFeatures.filter(item =>
+        (item.name.toLowerCase().includes(this.searchText.toLowerCase().trim()) || item.code.toLowerCase().includes(this.searchText.toLowerCase().trim())));
       this.viewDataWithFeatures = [...filteredItems]
     } else {
       this.viewDataWithFeatures = [...this.dataWithFeatures];

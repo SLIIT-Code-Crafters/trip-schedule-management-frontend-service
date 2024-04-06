@@ -215,3 +215,7 @@
     color: #212121;
   }
 }
+
+.table > :not(caption) > * > * {
+  padding: 0;
+}

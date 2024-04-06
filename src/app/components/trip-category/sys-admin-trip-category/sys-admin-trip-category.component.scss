@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   background: url("https://travel-trek-angular-client-assets.s3.ap-southeast-1.amazonaws.com/category-page-bg.jpg");
-  background-position: bottom;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   .breadcrumb-header {
@@ -68,7 +68,7 @@
       color: #1d8506;
     }
     .fa-trash-o{
-      color: var(--app-primary-dark-red);
+      color: var(--app-primary-dark-red-500);
     }
     i {
       font-size: 18px;
@@ -85,3 +85,19 @@
   box-shadow: none;
 }
 
+.form-control:focus, .form-select:focus{
+  border-color: var(--primary-blue-400);
+}
+.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+  box-shadow: none;
+}
+.form-control:focus , .form-select:focus{
+  box-shadow: none;
+}
+.form-control:disabled {
+  background-color: var(--gray-light);
+}
+
+.input-label-hd {
+  background-color: var(--primary-blue-100);
+}
