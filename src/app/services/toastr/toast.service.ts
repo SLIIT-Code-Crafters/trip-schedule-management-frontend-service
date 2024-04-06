@@ -24,8 +24,6 @@ export class AppToastService {
   }
 
   showToast(message: string, type: string) {
-
-    this.toastr.clear();
     switch (type) {
       case 'error': {
         this.toastr.error(message, 'Error');

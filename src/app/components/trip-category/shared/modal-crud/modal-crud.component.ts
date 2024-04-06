@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {CommonFunctionsService} from "../../../../services/common/common-functions.service";
 import {TripCategory} from "../../../../interfaces/trip-category/TripCategory";
 import * as _ from 'lodash';
-import {DATE_FORMAT_1} from "../../../../utility/common/common-constant";
+import {ADD_TASK, DATE_FORMAT_1, UPDATE_TASK, VIEW_TASK} from "../../../../utility/common/common-constant";
 import {CommonModule, DatePipe} from "@angular/common";
 import {AppToastService} from "../../../../services/toastr/toast.service";
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -20,10 +20,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./modal-crud.component.scss']
 })
 export class ModalCrudComponent implements OnInit {
-
-  protected readonly ADD_TASK: string = 'ADD';
-  protected readonly UPDATE_TASK: string = 'UPDATE';
-  protected readonly VIEW_TASK: string = 'VIEW';
 
   openedTask: string = '';
   data: TripCategory|null = null;
@@ -49,13 +45,13 @@ export class ModalCrudComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._setDataToFrom();
     this._setModalCustomized();
+    this._setDataToFrom();
   }
 
   private _setDataToFrom() {
     // this modal open for Update Or View, then assign values
-    if (this.openedTask != this.ADD_TASK && this.data) {
+    if (this.openedTask != ADD_TASK && this.data) {
       this.modalForm.patchValue({
         id: this.data.id,
         code: this.data.code,
@@ -68,18 +64,18 @@ export class ModalCrudComponent implements OnInit {
 
   private _setModalCustomized() {
     switch (this.openedTask) {
-      case 'ADD':
+      case ADD_TASK:
         this.modalLabel = 'Add';
         this.getFormAddedDate?.clearValidators();
         this.getFormAddedDate?.disable();
         break;
-      case 'UPDATE':
+      case UPDATE_TASK:
         this.modalLabel = 'Update';
         this.getFormId?.disable();
         this.getFormAddedDate?.disable();
         this.modalForm?.markAllAsTouched();
         break;
-      case 'VIEW':
+      case VIEW_TASK:
         this.modalLabel = 'View';
         this.modalForm.disable();
         break;
@@ -92,11 +88,11 @@ export class ModalCrudComponent implements OnInit {
     //mark all field as touched
     this.modalForm.markAllAsTouched();
     //check all data validate and this modal is not view
-    if (this.modalForm.valid && this.openedTask && this.openedTask != this.VIEW_TASK) {
-      if (this.openedTask == this.ADD_TASK) {
+    if (this.modalForm.valid && this.openedTask && this.openedTask != VIEW_TASK) {
+      if (this.openedTask == ADD_TASK) {
         this.getFormAddedDate?.setValue(this.datePipe.transform(new Date(), DATE_FORMAT_1));
       }
-      if (this.openedTask == this.UPDATE_TASK && !this._isChangedData()) {
+      if (this.openedTask == UPDATE_TASK && !this._isChangedData()) {
         this.toastService.warningMessage('There is no data changed');
       } else {
         this.passEntry.emit(this.modalForm.getRawValue())
@@ -108,7 +104,7 @@ export class ModalCrudComponent implements OnInit {
 
   // checking only update process
   protected _isChangedData(): boolean {
-    if (_.isEqual(this.openedTask, this.UPDATE_TASK)) {
+    if (_.isEqual(this.openedTask, UPDATE_TASK)) {
       if (!_.isEqual(this.data?.id, this.getFormId?.value)) {
         return true;
       } else if (!_.isEqual(this.data?.code, this.getFormCode?.value)) {
@@ -144,4 +140,7 @@ export class ModalCrudComponent implements OnInit {
   get getFormAddedDate() {
     return this.modalForm.get('addedDate');
   }
+
+  protected readonly ADD_TASK = ADD_TASK;
+  protected readonly UPDATE_TASK = UPDATE_TASK;
 }

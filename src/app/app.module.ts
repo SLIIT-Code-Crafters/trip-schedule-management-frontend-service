@@ -27,6 +27,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       closeButton: true,
+      maxOpened: 10,
+      progressBar:true,
+      timeOut:2000
     }),
   ],
 })

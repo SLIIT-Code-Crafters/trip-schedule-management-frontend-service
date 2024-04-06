@@ -9,8 +9,9 @@
         <div class="container row table-action-set">
           <div class="col">
           <div class="input-group mb-3">
-            <input type="text" class="form-control custom-input" placeholder="Search..." [(ngModel)]="searchText">
-            <button class="btn btn-warning" type="button" (click)="searchItems()"><i class="bi bi-search"></i> Search</button>
+            <input type="text" class="form-control custom-input" placeholder="Search..." [(ngModel)]="searchText" maxlength="200"
+                   (keyup)="searchItems()">
+            <label class="input-group-text input-label-hd"><i class="bi bi-search"></i>Search</label>
           </div>
           </div>
           <div class="col">
