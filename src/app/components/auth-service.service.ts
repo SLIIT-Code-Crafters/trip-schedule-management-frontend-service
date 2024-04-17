@@ -21,6 +21,10 @@ export class AuthServiceService {
     return this.http.post(url, data);
   }
 
+  activation(email: any, code: any) {
+    const url = `${this.environment}api/v1/private/auth/activate?email=${email}&activationCode=${code}&requestId=active`;
+    return this.http.put(url, {});
+  }
   login(token: any, data: any): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

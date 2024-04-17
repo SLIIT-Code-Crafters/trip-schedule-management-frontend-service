@@ -46,23 +46,19 @@ export class SigninPageComponent {
     this.AuthServiceService.authenticate(data).subscribe((res) => {
       this.authtoken = res.data.token;
       this.login();
-
-      console.log(this.authtoken);
     });
   }
 
   login() {
     const data = {
-      user: this.loginForm.get('email')?.value,
+      email: this.loginForm.get('email')?.value,
       password: this.loginForm.get('password')?.value,
     };
 
     this.AuthServiceService.login(this.authtoken, data).subscribe(
       (res) => {
-        this.router.navigate(['/register']);
+        this.router.navigate(['#']);
         this.toastService.successMessage('User Login Successfull');
-        console.log(res);
-        console.log(this.authtoken);
       },
       (error) => {
         this.toastService.errorMessage('user login unsuccessfull');

@@ -5,6 +5,7 @@ import { SigninPageComponent } from './components/signin-page/signin-page.compon
 import { SignupComponent } from './components/signup/signup.component';
 import { SysAdminTripCategoryComponent } from './components/trip-category/sys-admin-trip-category/sys-admin-trip-category.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { ActivationComponent } from './components/activation/activation.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'profile',
     component: EditProfileComponent,
+  },
+  {
+    path: 'activation',
+    component: ActivationComponent,
   },
   {
     path: 'sysadmin-category',

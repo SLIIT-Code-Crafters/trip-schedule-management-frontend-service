@@ -1,0 +1,36 @@
+<div class="account">
+  <div class="cards">
+    <div class="card-header">
+      <p class="text-center font-08-rem mt-13">
+        The activation code has sent to your Email. <br />
+        Please check and Type your activation code, that you recieved in your
+        mail inbox.
+      </p>
+    </div>
+    <form [formGroup]="activationForm">
+      <div class="card-body">
+        <div class="row flex-center">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+                formControlName="activationCode"
+              />
+              <label for="floatingInput">Enter Activation Code here</label>
+            </div>
+
+            <input class="activation-code-input w-100" placeholder="code" />
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-info w-100" (click)="activate()">
+          Activate
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
