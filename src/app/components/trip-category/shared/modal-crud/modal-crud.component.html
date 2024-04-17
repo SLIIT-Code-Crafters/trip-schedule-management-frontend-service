@@ -5,45 +5,43 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="modalForm">
-      <div class="mb-3">
+      <div class="row mb-3 single-row">
         <label for="inputId" class="form-label">ID</label>
-        <input type="text" class="form-control" id="inputId" formControlName="id" name="id" placeholder="ID"
+        <input type="text" class="form-control" id="inputId" formControlName="id" name="id" maxlength="200"
                [ngClass]="(getFormId?.touched && !getFormId?.disabled)?(getFormId?.valid)?'is-valid':'is-invalid':''">
         <div class="invalid-feedback" id="inputIdFeedback" *ngIf="getFormId?.errors?.['required']">ID is Required</div>
       </div>
 
-      <div class="mb-3">
-        <label for="inputCode" class="form-label">CODE</label>
-        <input type="text" class="form-control" id="inputCode" formControlName="code" name="code" placeholder="Code"
+      <div class="row mb-3 single-row">
+        <label for="inputCode" class="form-label">Code</label>
+        <input type="text" class="form-control" id="inputCode" formControlName="code" name="code" maxlength="200"
                [ngClass]="(getFormCode?.touched)?(getFormCode?.valid)?'is-valid':'is-invalid':''">
         <div class="invalid-feedback" id="inputCodeFeedback" *ngIf="getFormCode?.errors?.['required']">Code is
           Required
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="inputName" class="form-label">NAME</label>
-        <input type="text" class="form-control" id="inputName" formControlName="name" name="name" placeholder="Name"
+      <div class="row mb-3 single-row">
+        <label for="inputName" class="form-label">Name</label>
+        <input type="text" class="form-control" id="inputName" formControlName="name" name="name" maxlength="200"
                [ngClass]="(getFormName?.touched)?(getFormName?.valid)?'is-valid':'is-invalid':''">
         <div class="invalid-feedback" id="inputNameFeedback" *ngIf="getFormName?.errors?.['required']">Name is
           Required
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="inputDescription" class="form-label">DESCRIPTION</label>
+      <div class="row mb-3 single-row">
+        <label for="inputDescription" class="form-label">Description</label>
         <textarea rows="3" class="form-control" id="inputDescription" formControlName="description" name="description"
-                  placeholder="Description"
                   [ngClass]="(getFormDescription?.touched)?(getFormDescription?.valid)?'is-valid':'is-invalid':''"></textarea>
         <div class="invalid-feedback" id="inputDescriptionFeedback" *ngIf="getFormDescription?.errors?.['required']">
           Description is Required
         </div>
       </div>
 
-      <div class="mb-3" *ngIf="openedTask != ADD_TASK">
-        <label for="inputAddedDate" class="form-label">ADDED DATE</label>
+      <div class="row mb-3 single-row" *ngIf="openedTask != ADD_TASK">
+        <label for="inputAddedDate" class="form-label">Added Date</label>
         <input type="text" class="form-control" id="inputAddedDate" formControlName="addedDate" name="addedDate"
-               placeholder="Added Date"
                [ngClass]="(getFormAddedDate?.touched && !getFormAddedDate?.disabled)?(getFormAddedDate?.valid)?'is-valid':'is-invalid':''">
         <div class="invalid-feedback" id="inputAddedDateFeedback" *ngIf="getFormAddedDate?.errors?.['required']">Added
           Date is Required
@@ -60,4 +58,3 @@
     <div class="modal-footer" ></div>
   </ng-template>
 </div>
-

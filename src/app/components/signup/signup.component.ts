@@ -65,7 +65,6 @@ export class SignupComponent {
       (res) => {
         this.toastService.successMessage('user registered successfully');
         this.router.navigate(['/activation']);
-
         this.authToken = res.data.authToken;
       },
       (error) => {
