@@ -2,9 +2,9 @@
   <div class="cards">
     <div class="card-header">
       <p class="text-center font-08-rem mt-13">
-        The activation code has sent to your Email. <br />
-        Please check and Type your activation code, that you recieved in your
-        mail inbox.
+        Your activation code has been successfully sent to your email. <br />
+        Please take a moment to check your inbox and enter the activation code
+        you received to activate your accoun
       </p>
     </div>
     <form [formGroup]="activationForm">
@@ -16,10 +16,12 @@
                 type="email"
                 class="form-control"
                 id="floatingInput"
-                placeholder="name@example.com"
+                placeholder="Activation code"
                 formControlName="activationCode"
               />
-              <label for="floatingInput">Enter Activation Code here</label>
+              <label for="floatingInput"
+                >Enter Your Account Activation Code</label
+              >
             </div>
 
             <input class="activation-code-input w-100" placeholder="code" />

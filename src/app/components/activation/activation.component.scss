@@ -126,8 +126,6 @@ body {
 
 .activation-code .activation-code-inputs {
   display: flex;
-  /*flex-direction: row;*/
-  /*flex-wrap: nowrap;*/
   flex-flow: row nowrap;
 }
 
@@ -145,7 +143,6 @@ body {
   border-bottom: 2px solid;
   border-color: #ccc;
   margin-right: 8px;
-  /*background: red;*/
   opacity: 0;
 }
 

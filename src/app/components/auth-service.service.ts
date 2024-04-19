@@ -22,7 +22,7 @@ export class AuthServiceService {
   }
 
   activation(email: any, code: any) {
-    const url = `${this.environment}api/v1/private/auth/activate?email=${email}&activationCode=${code}&requestId=active`;
+    const url = `${this.environment}api/v1/private/auth/activate?email=${email}&activationCode=${code}&requestId=accountActivationReq`;
     return this.http.put(url, {});
   }
   login(token: any, data: any): Observable<any> {
