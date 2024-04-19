@@ -13,9 +13,18 @@
       /> -->
     </div>
     <div class="registration">
-      Already have Account? <a href="#">Sign in</a>.
+      Already have Account? <a href="/login">Sign in</a>.
     </div>
     <form [formGroup]="signupForm">
+      <select
+        id="salutation"
+        formControlName="salutation"
+        class="form-select"
+        aria-label="Default select example"
+      >
+        <option value="MS">MS</option>
+        <option value="MR">MR</option>
+      </select>
       <label class="login">
         <input
           formControlName="firstname"
@@ -29,6 +38,17 @@
       <label class="login">
         <input formControlName="username" type="text" placeholder="Username" />
       </label>
+
+      <select
+        id="role"
+        formControlName="role"
+        class="form-select"
+        aria-label="Default select example"
+      >
+        <option value="TO">Trip Organizer</option>
+        <option value="TP">Trip Participant</option>
+        <option value="SA">System Administrator</option>
+      </select>
 
       <label for="login" class="login">
         <input
@@ -54,6 +74,22 @@
           placeholder="Password"
         />
       </label>
+      <label for="passwd" class="passwd">
+        <input
+          id="confirm-passwd"
+          formControlName="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+        />
+      </label>
+      <div
+        *ngIf="
+          signupForm.hasError('passwordMismatch') &&
+          signupForm.get('confirmPassword')?.dirty
+        "
+      >
+        Passwords do not match.
+      </div>
       <button class="button" type="submit" (click)="signup()">Sign Up</button>
     </form>
   </div>

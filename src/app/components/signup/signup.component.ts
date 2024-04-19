@@ -2,6 +2,7 @@ import { AuthServiceService } from './../auth-service.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -31,17 +32,21 @@ export class SignupComponent {
     private router: Router
   ) {}
   ngOnInit(): void {
-    this.signupForm = this.fb.group({
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      contactNumber: ['', Validators.required],
-      password: ['', Validators.required],
-      salutation: ['MS'],
-      role: ['SA'],
-      masterToken: ['MT-SYSADMIN'],
-    });
+    this.signupForm = this.fb.group(
+      {
+        firstname: ['', Validators.required],
+        lastname: ['', Validators.required],
+        username: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        contactNumber: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
+        salutation: [''],
+        role: [''],
+        masterToken: ['MT-SYSADMIN'],
+      },
+      { validator: this.passwordMatchValidator }
+    );
   }
 
   signup() {
@@ -59,14 +64,29 @@ export class SignupComponent {
     this.AuthServiceService.signup(data).subscribe(
       (res) => {
         this.toastService.successMessage('user registered successfully');
-        this.router.navigate(['/login']);
-
+        this.router.navigate(['/activation']);
         this.authToken = res.data.authToken;
-        console.log(this.authToken);
       },
       (error) => {
         this.toastService.errorMessage('user registration unsuccessful');
       }
     );
+  }
+
+  passwordMatchValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+
+    if (
+      password &&
+      confirmPassword &&
+      password.value !== confirmPassword.value
+    ) {
+      return { passwordMismatch: true };
+    }
+
+    return null;
   }
 }
