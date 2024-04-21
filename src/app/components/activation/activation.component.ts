@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthServiceService } from './../auth-service.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AppToastService } from 'src/app/services/toastr/toast.service';
+import { LocalStroage } from 'src/component/local-storage';
 
 @Component({
   selector: 'app-activation',
@@ -15,6 +16,7 @@ import { AppToastService } from 'src/app/services/toastr/toast.service';
 export class ActivationComponent {
   activationForm: any;
   email!: string;
+  public registeredEmail = '';
 
   constructor(
     private router: Router,
@@ -27,13 +29,18 @@ export class ActivationComponent {
     this.activationForm = this.fb.group({
       activationCode: [''],
     });
+    this.registeredEmail = localStorage.getItem(
+      LocalStroage.registered_email
+    ) as string;
   }
 
   activate() {
     const activationCode = this.activationForm.get('activationCode')?.value;
-    this.email = '';
-    console.log(activationCode);
-    this.AuthServiceService.activation(this.email, activationCode).subscribe(
+
+    this.AuthServiceService.activation(
+      this.registeredEmail,
+      activationCode
+    ).subscribe(
       (res) => {
         this.toastService.successMessage('Account activation succesfully');
         this.router.navigate(['/login']);
