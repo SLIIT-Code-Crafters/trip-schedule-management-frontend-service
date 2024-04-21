@@ -45,21 +45,14 @@ export class SignupComponent {
         confirmPassword: ['', Validators.required],
         salutation: [''],
         role: [''],
-<<<<<<< HEAD
         masterToken: [''],
       },
       { validator: this.passwordMatchValidator }
     );
 
     this.signupForm.get('role')?.valueChanges.subscribe((role) => {
-      this.showAdditionalField = role === 'SA'; // Show the additional field if role is 'SA'
+      this.showAdditionalField = role === 'SA';
     });
-=======
-        masterToken: ['MT-SYSADMIN'],
-      },
-      { validator: this.passwordMatchValidator }
-    );
->>>>>>> 3410302bd2e4ab0aa1be27127965a519ad80179d
   }
 
   signup() {
@@ -79,12 +72,9 @@ export class SignupComponent {
         this.toastService.successMessage('user registered successfully');
         this.router.navigate(['/activation']);
         this.authToken = res.data.authToken;
-<<<<<<< HEAD
         console.log(this.email);
         localStorage.setItem(LocalStroage.registered_email, res.data?.email);
         this.email = res.data.email;
-=======
->>>>>>> 3410302bd2e4ab0aa1be27127965a519ad80179d
       },
       (error) => {
         this.toastService.errorMessage('user registration unsuccessful');
