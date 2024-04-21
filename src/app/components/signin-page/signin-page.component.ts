@@ -11,6 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthServiceService } from './../auth-service.service';
 import { Router } from '@angular/router';
 import { AppToastService } from 'src/app/services/toastr/toast.service';
+import { LocalStroage } from 'src/component/local-storage';
 @Component({
   selector: 'app-signin-page',
   standalone: true,
@@ -45,6 +46,7 @@ export class SigninPageComponent {
     };
     this.AuthServiceService.authenticate(data).subscribe((res) => {
       this.authtoken = res.data.token;
+      localStorage.setItem(LocalStroage.authToken, res.data?.token);
       this.login();
     });
   }

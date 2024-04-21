@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { LocalStroage } from 'src/component/local-storage';
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +38,16 @@ export class AuthServiceService {
     });
     const url = `${this.environment}api/v1/private/users/login?requestId=userlog`;
     return this.http.post(url, data, { headers });
+  }
+
+  userDetails(email: string): Observable<any> {
+    const authToken = localStorage.getItem(
+      LocalStroage.authToken
+    ) as string;
+    const url = `${this.environment}api/v1/private/users/get-by-email/${email}?requestId=userDetails`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    return this.http.get(url, { headers });
   }
 }

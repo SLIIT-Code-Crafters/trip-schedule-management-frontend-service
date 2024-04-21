@@ -28,6 +28,7 @@ export class ActivationComponent {
   ngOnInit(): void {
     this.activationForm = this.fb.group({
       activationCode: [''],
+      email: [''],
     });
     this.registeredEmail = localStorage.getItem(
       LocalStroage.registered_email
