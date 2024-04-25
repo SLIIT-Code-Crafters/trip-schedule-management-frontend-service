@@ -8,11 +8,10 @@
     <div class="avatar">
       <!--       <img src="https://68.media.tumblr.com/avatar_8671f0f36a5f_128.png" alt="" /> -->
     </div>
-    <div class="registration">Need an Account? <a href="#">Sign Up</a>.</div>
+    <div class="registration">
+      Need an Account? <a href="/register">Sign Up</a>.
+    </div>
     <form [formGroup]="loginForm">
-      <label for="login" class="login">
-        <input formControlName="user" type="text" placeholder="Username" />
-      </label>
       <label for="login" class="login">
         <input formControlName="email" type="text" placeholder="email" />
       </label>
