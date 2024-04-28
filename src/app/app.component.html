@@ -1,7 +1,4 @@
-<ng-container *ngIf="showLandingPage">
-  <app-landing-page></app-landing-page>
-</ng-container>
+<router-outlet></router-outlet>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#eb6734" type="ball-spin-clockwise"
+             [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
 
-<router-outlet *ngIf="!showLandingPage"></router-outlet>
-<!-- <app-signup></app-signup>
-<app-signin-page></app-signin-page> -->

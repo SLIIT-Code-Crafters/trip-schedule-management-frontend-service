@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent {
   title = 'traveltrek-frontEnd';
   showLandingPage: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {

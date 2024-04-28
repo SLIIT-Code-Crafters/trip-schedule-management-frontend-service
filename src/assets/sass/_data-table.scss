@@ -5,7 +5,7 @@
 
 
 .table {
-  margin-top: 16px;
+  margin-top: 18px;
   margin-bottom: 16px;
   display: inline-block;
 }
@@ -183,7 +183,7 @@
 /*Data table styles*/
 .ngx-datatable.material{
   border: 1px solid #D9D9D9;
-  box-shadow: 0px 6px 20px rgba(24, 57, 138, 0.29);
+  box-shadow: none;
   border-radius: 5px;
   // max-width: 1024px;
   // margin: 16px auto;
