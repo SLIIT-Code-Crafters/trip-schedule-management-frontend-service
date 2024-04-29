@@ -23,14 +23,14 @@ export class AdminService {
   createTripCategory(data: TripCategoryCreateRequest): Observable<CommonResponse<TripCategory>> {
     const url = `${this.environment}api/v1/private/trip-categories/save`;
     let httpParams = new HttpParams();
-    httpParams = httpParams.set('requestId', '123');
+    httpParams = httpParams.set('requestId', 'createTripCat');
     return this.http.post<CommonResponse<TripCategory>>(url, data, {params: httpParams});
   }
 
   updateTripCategory(id:string, data: TripCategoryUpdateRequest): Observable<CommonResponse<TripCategory>> {
     const url = `${this.environment}api/v1/private/trip-categories/update/${id}`;
     let httpParams = new HttpParams();
-    httpParams = httpParams.set('requestId', '123');
+    httpParams = httpParams.set('requestId', 'updateTripCat');
     return this.http.put<CommonResponse<TripCategory>>(url, data, {params: httpParams});
   }
 
@@ -38,12 +38,12 @@ export class AdminService {
     const url = `${this.environment}api/v1/private/trip-categories/delete/${id}`;
     let httpParams = new HttpParams();
     httpParams = httpParams.set('deletedBy', deletedBy);
-    httpParams = httpParams.set('requestId', '1110');
+    httpParams = httpParams.set('requestId', 'deleteTripCat');
     return this.http.delete<CommonResponse<TripCategory>>(url, {params: httpParams});
   }
 
   getAllTripCategory(paramMap: Map<string, string>): Observable<CommonResponse<TripCategoryResponseBody>> {
-    const url = `${this.environment}api/v1/private/trip-categories/get-all?requestId=123`;
+    const url = `${this.environment}api/v1/private/trip-categories/get-all?requestId=getTripCat`;
     let httpParams = this.commonService.getDataTableHttpParam(paramMap);
     return this.http.get<CommonResponse<TripCategoryResponseBody>>(url, {params: httpParams});
   }
