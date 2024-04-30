@@ -1,0 +1,68 @@
+.cuz-blue-btn {
+    background-color: var(--app-primary-blue);
+}
+.cuz-btn {
+  button{
+    width: 100px;
+  }
+}
+.modal-body {
+  padding: 30px;
+}
+.modal-content {
+  border: none;
+}
+.modal-header{
+  background: var(--primary-blue-100);
+}
+
+hr{
+  margin: 20px 0;
+  border-top: 2px dashed #888888;
+  opacity: 0.25;
+}
+
+.custom-button{
+  background-color: var(--primary-blue-500);
+  border-color: var(--primary-blue-400);
+}
+:not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active{
+  background-color: var(--primary-blue-400);
+  border-color: var(--primary-blue-400);
+}
+.custom-input{
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus{
+  border-color: var(--primary-blue-400);
+}
+.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+  box-shadow: none;
+}
+.form-control:focus , .form-select:focus{
+  box-shadow: none;
+}
+.btn-close:focus {
+  box-shadow: none;
+}
+.single-row{
+  label {
+    width: 32%;
+  }
+
+  input,
+  textarea {
+    width: 66%;
+  }
+  .invalid-feedback {
+    margin-left: 30%;
+  }
+}
+.form-control:disabled {
+  background-color: #f1f1f1;
+  opacity: 1;
+}
+.form-control:disabled {
+  background-color: var(--gray-light);
+}
