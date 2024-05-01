@@ -21,7 +21,9 @@
         formControlName="salutation"
         class="form-select"
         aria-label="Default select example"
+        placeholder="salutation"
       >
+        <option value="" disabled selected hidden>Salutation</option>
         <option value="MS">MS</option>
         <option value="MR">MR</option>
       </select>
@@ -44,11 +46,24 @@
         formControlName="role"
         class="form-select"
         aria-label="Default select example"
+        placeholder="Select Role"
       >
+        <option value="" disabled selected hidden>Select Role</option>
         <option value="TO">Trip Organizer</option>
         <option value="TP">Trip Participant</option>
         <option value="SA">System Administrator</option>
       </select>
+
+      <div *ngIf="showAdditionalField" class="mb-3">
+        <label for="additionalField" class="login">
+          <input
+            id="additionalField"
+            formControlName="masterToken"
+            type="text"
+            placeholder="Enter MasterToken"
+          />
+        </label>
+      </div>
 
       <label for="login" class="login">
         <input

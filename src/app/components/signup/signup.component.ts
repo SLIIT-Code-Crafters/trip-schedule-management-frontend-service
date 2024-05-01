@@ -12,6 +12,7 @@ import {
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppToastService } from 'src/app/services/toastr/toast.service';
 import { Router } from '@angular/router';
+import { LocalStroage } from 'src/component/local-storage';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +24,8 @@ import { Router } from '@angular/router';
 export class SignupComponent {
   public signupForm!: FormGroup;
   authToken: any;
-
+  showAdditionalField = false;
+  email!: string;
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -43,10 +45,14 @@ export class SignupComponent {
         confirmPassword: ['', Validators.required],
         salutation: [''],
         role: [''],
-        masterToken: ['MT-SYSADMIN'],
+        masterToken: [''],
       },
       { validator: this.passwordMatchValidator }
     );
+
+    this.signupForm.get('role')?.valueChanges.subscribe((role) => {
+      this.showAdditionalField = role === 'SA';
+    });
   }
 
   signup() {
@@ -66,6 +72,9 @@ export class SignupComponent {
         this.toastService.successMessage('user registered successfully');
         this.router.navigate(['/activation']);
         this.authToken = res.data.authToken;
+        console.log(this.email);
+        localStorage.setItem(LocalStroage.registered_email, res.data?.email);
+        this.email = res.data.email;
       },
       (error) => {
         this.toastService.errorMessage('user registration unsuccessful');
