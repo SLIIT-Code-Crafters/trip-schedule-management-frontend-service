@@ -1,0 +1,40 @@
+<app-header></app-header>
+<div class="act-container">
+  <div class="account">
+    <div class="cards">
+      <div class="card-header">
+        <p class="text-center font-08-rem mt-13">
+          Your activation code has been successfully sent to {{registeredEmail}} <br/>
+          Please take a moment to check your inbox and enter the activation code
+          you received to activate your account.
+        </p>
+      </div>
+      <form [formGroup]="activationForm">
+        <div class="card-body">
+          <div class="row flex-center">
+            <div class="col">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="Activation code"
+                  formControlName="activationCode"
+                />
+                <label for="floatingInput">Enter Your Account Activation Code</label>
+              </div>
+
+              <input class="activation-code-input w-100" placeholder="code"/>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-info w-100" [disabled]="activationForm.invalid" (click)="activate()">
+            Activate
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

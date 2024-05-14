@@ -1,0 +1,72 @@
+.cuz-blue-btn {
+  background-color: var(--app-primary-blue);
+}
+
+.cuz-btn {
+  button {
+    width: 100px;
+  }
+}
+
+.modal-content {
+  border: none;
+}
+
+.modal-header {
+  background: var(--primary-blue-100);
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 4px 0 16px 0;
+}
+
+hr {
+  margin: 20px 0;
+  border-top: 2px dashed #888888;
+  opacity: 0.25;
+}
+
+.custom-button-blue {
+  background-color: var(--primary-blue-500);
+  border-color: var(--primary-blue-400);
+}
+
+.custom-button {
+  background-color: var(--app-primary-green-500);
+  border-color: var(--app-primary-green-400);
+}
+
+.custom-button-cancel {
+  background-color: var(--app-primary-dark-red-500);
+  border-color: var(--app-primary-dark-red-400);
+}
+
+:not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active {
+  background-color: var(--primary-blue-400);
+  border-color: var(--primary-blue-400);
+}
+
+.custom-input {
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-blue-400);
+}
+
+.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: none;
+}
+
+.btn-close:focus {
+  box-shadow: none;
+}
+
+.form-control:disabled {
+  background-color: var(--gray-light);
+}

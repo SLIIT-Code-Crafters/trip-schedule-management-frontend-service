@@ -1,30 +1,10 @@
 <div class="container-fluid main" #carousel style="height: 780px">
-  <header class="top-bar" style="height: 4.5rem">
-    <div class="container">
-      <img style="width: 100px; height: 100px" src="assets/img/logo.png" />
-
-      <nav class="navigation">
-        <ul>
-          <li><a routerLink="/about">About</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
-          <li><a [routerLink]="['/admin']">Admin</a></li>
-        </ul>
-        <ul class="auth">
-          <li style="margin-right: 1rem" (click)="login()">
-            <a routerLink="/login">Login</a>
-          </li>
-          <li><a routerLink="/register" (click)="register()">Sign Up</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <div
-    #carousel
-    id="myCarousel"
-    class="carousel carousel-fade slide"
-    data-ride="carousel"
-    data-interval="3000"
-  >
+  <app-header></app-header>
+  <div #carousel
+       id="myCarousel"
+       class="carousel carousel-fade slide"
+       data-ride="carousel"
+       data-interval="3000">
     <div class="carousel-inner" role="listbox">
       <div class="item active background a"></div>
       <div class="item background b"></div>
@@ -38,10 +18,11 @@
       <h3 class="subtitle">Join a community of 100,000+ travelers</h3>
     </div>
     <div class="col-xs-12 explore">
-      <a href="#"
-        ><button type="button" class="btn btn-lg explorebtn">
+      <a>
+        <button type="button" class="btn btn-lg explorebtn">
           Join the group
-        </button></a
+        </button>
+      </a
       >
     </div>
   </div>
@@ -145,45 +126,4 @@
     </div>
   </div>
 </section>
-
-<footer class="footer">
-  <div class="container row">
-    <div class="footer-col">
-      <h4>Travel Trek</h4>
-      <ul>
-        <li><a href="#">about us</a></li>
-        <li><a href="#">our services</a></li>
-        <li><a href="#">privacy policy</a></li>
-        <li><a href="#">visit website</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>get help</h4>
-      <ul>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Upcoming trips</a></li>
-        <li><a href="#">Pyaments</a></li>
-        <li><a href="#">Adventure</a></li>
-        <li><a href="#">Trip Status</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Our Services</h4>
-      <ul>
-        <li><a href="#">Meet your trip buddy</a></li>
-        <li><a href="#">Tour guides</a></li>
-        <li><a href="#">Maps</a></li>
-        <li><a href="#">Most Visited Places</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>follow us</h4>
-      <div class="social-links">
-        <a href="#"><i class="bi bi-whatsapp"></i></a>
-        <a href="#"><i class="bi bi-facebook"></i></a>
-        <a href="#"><i class="bi bi-instagram"></i></a>
-        <a href="#"><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>
-</footer>
+<app-footer></app-footer>

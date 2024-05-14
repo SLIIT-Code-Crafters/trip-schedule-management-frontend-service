@@ -1,0 +1,66 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">{{modalLabel}} Category</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cross-click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="modalForm">
+      <div class="row mb-3 single-row" *ngIf="openedTask != ADD_TASK">
+        <label for="inputId" class="form-label">ID</label>
+        <input type="text" class="form-control" id="inputId" formControlName="id" name="id" maxlength="200"
+               [ngClass]="(getFormId?.touched && !getFormId?.disabled)?(getFormId?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputIdFeedback"
+             *ngIf="getFormId?.errors?.['required'] || getFormId?.errors?.['whitespace']">ID is Required
+        </div>
+      </div>
+
+      <div class="row mb-3 single-row">
+        <label for="inputCode" class="form-label">Code</label>
+        <input type="text" class="form-control" id="inputCode" formControlName="code" name="code" maxlength="200"
+               [ngClass]="(getFormCode?.touched && !getFormCode?.disabled)?(getFormCode?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputCodeFeedback"
+             *ngIf="getFormCode?.errors?.['required'] || getFormCode?.errors?.['whitespace']">Code is
+          Required
+        </div>
+      </div>
+
+      <div class="row mb-3 single-row">
+        <label for="inputName" class="form-label">Name</label>
+        <input type="text" class="form-control" id="inputName" formControlName="name" name="name" maxlength="200"
+               [ngClass]="(getFormName?.touched)?(getFormName?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputNameFeedback"
+             *ngIf="getFormName?.errors?.['required'] || getFormName?.errors?.['whitespace']">Name is
+          Required
+        </div>
+      </div>
+
+      <div class="row mb-3 single-row">
+        <label for="inputDescription" class="form-label">Description</label>
+        <textarea rows="3" class="form-control" id="inputDescription" formControlName="description" name="description"
+                  [ngClass]="(getFormDescription?.touched)?(getFormDescription?.valid)?'is-valid':'is-invalid':''"></textarea>
+        <div class="invalid-feedback" id="inputDescriptionFeedback"
+             *ngIf="getFormDescription?.errors?.['required'] || getFormDescription?.errors?.['whitespace']">
+          Description is Required
+        </div>
+      </div>
+
+      <div class="row mb-3 single-row" *ngIf="openedTask != ADD_TASK">
+        <label for="inputAddedDate" class="form-label">Added Date</label>
+        <input type="text" class="form-control" id="inputAddedDate" formControlName="addedDate" name="addedDate"
+               [ngClass]="(getFormAddedDate?.touched && !getFormAddedDate?.disabled)?(getFormAddedDate?.valid)?'is-valid':'is-invalid':''">
+        <div class="invalid-feedback" id="inputAddedDateFeedback"
+             *ngIf="getFormAddedDate?.errors?.['required'] || getFormAddedDate?.errors?.['whitespace']">Added
+          Date is Required
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer cuz-btn" *ngIf="(openedTask == ADD_TASK || openedTask == UPDATE_TASK);else empty_footer;">
+    <button type="button" class="btn btn-primary cuz-blue-btn"
+            (click)="submitForm()"> {{modalLabel}} </button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+  <ng-template #empty_footer>
+    <div class="modal-footer"></div>
+  </ng-template>
+</div>
