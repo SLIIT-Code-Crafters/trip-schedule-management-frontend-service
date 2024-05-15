@@ -43,6 +43,7 @@ header.top-bar {
         }
       }
     }
+
     .auth {
       li {
         display: inline-block;
@@ -137,17 +138,17 @@ header.top-bar {
 
 .carousel .background.a {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.pexels.com/photos/1002407/pexels-photo-1002407.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+  url("https://images.pexels.com/photos/1002407/pexels-photo-1002407.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
 }
 
 .carousel .background.b {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=600");
+  url("https://images.pexels.com/photos/1000445/pexels-photo-1000445.jpeg?auto=compress&cs=tinysrgb&w=600");
 }
 
 .carousel .background.c {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.pexels.com/photos/3512847/pexels-photo-3512847.jpeg?auto=compress&cs=tinysrgb&w=600");
+  url("https://images.pexels.com/photos/3512847/pexels-photo-3512847.jpeg?auto=compress&cs=tinysrgb&w=600");
 }
 
 .carousel-fade .carousel-inner .item {
@@ -181,6 +182,7 @@ header.top-bar {
     transform: translate3d(0, 0, 0);
   }
 }
+
 /* CSS Hack to trigger GPU for smooth transition */
 
 .covertext {

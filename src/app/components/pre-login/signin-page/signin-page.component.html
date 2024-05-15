@@ -1,0 +1,34 @@
+<div class="container row login-box">
+  <div class="col login-title">
+    <h1>Welcome Back?</h1>
+    <span class="small-text">Let's get started!</span> <br/><br/>
+    <span class="small-text">Join Travel Trek Today!</span>
+  </div>
+  <div class="col login-form">
+    <div class="avatar">
+      
+    </div>
+    <div class="registration">
+      Need an Account? <a (click)="singUp()" type="button" style="color: #3f51b5">Sign Up</a>.
+    </div>
+    <form [formGroup]="loginForm">
+      <label for="login" class="login">
+        <input formControlName="email" type="text" placeholder="email"/>
+      </label>
+      <label for="passwd" class="passwd">
+        <input
+          id="passwd"
+          formControlName="password"
+          type="password"
+          placeholder="Password"
+        />
+      </label>
+      <button class="button" type="submit" (click)="authenticate()">
+        Sign in
+      </button>
+    </form>
+    <div class="lost-passwd">
+      <a href="#">Forgot your password?</a>
+    </div>
+  </div>
+</div>

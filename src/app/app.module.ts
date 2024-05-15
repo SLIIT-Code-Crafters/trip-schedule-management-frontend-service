@@ -1,18 +1,18 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { SigninPageComponent } from './components/signin-page/signin-page.component';
-import { LandingPageComponent } from './components/landing-page/landing-page.component';
-import { SignupComponent } from './components/signup/signup.component';
-import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ReactiveFormsModule} from '@angular/forms';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {Interceptor} from "./services/interceptors/Interceptor";
+import {
+  TripDeleteModalComponentComponent
+} from './components/post-login/organizer/shared/trip-delete-modal-component/trip-delete-modal-component.component';
 
 const INTERCEPTORS = [{
   provide: HTTP_INTERCEPTORS,
@@ -23,8 +23,9 @@ const INTERCEPTORS = [{
     provide: LocationStrategy, useClass: HashLocationStrategy
   }
 ];
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TripDeleteModalComponentComponent],
   providers: [INTERCEPTORS],
   bootstrap: [AppComponent],
   imports: [
@@ -32,9 +33,6 @@ const INTERCEPTORS = [{
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    SigninPageComponent,
-    LandingPageComponent,
-    SignupComponent,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
@@ -46,4 +44,5 @@ const INTERCEPTORS = [{
     NgxSpinnerModule
   ],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,0 +1,13 @@
+export const TOKEN_EXPIRED_ERROR_CODE = 302;
+export const SESSION_TIME_OUT_ERROR_CODE = 421;
+export const ANOTHER_USER_LOGGED_ERROR_CODE = 308;
+export const FORBIDDEN_ERROR_CODE = 403;
+export const UNAUTHORIZED_ERROR_CODE = 400;
+export const INTERNAL_SERVER_ERROR_CODE = 500;
+export const NOT_FOUND_ERROR_CODE = 404;
+
+
+export const SUCCESS_CODE = 200;
+export const NOT_ACTIVATED_CODE = 202;
+
+

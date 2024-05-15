@@ -1,0 +1,68 @@
+.main-content {
+  border: 2px dashed #999999;
+  width: 100%;
+  padding: 16px 16px 16px 16px;
+ 
+  border-radius: 5px;
+  
+}
+
+.content-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+label {
+  width: 36%;
+}
+
+input,
+textarea {
+  width: 64%;
+}
+
+.custom-button {
+  background-color: var(--primary-blue-500);
+  border-color: var(--primary-blue-400);
+}
+
+.custom-button-remove {
+  background-color: var(--app-primary-dark-red-500);
+  border-color: var(--app-primary-dark-red-400);
+}
+
+:not(.btn-check) + .btn:active,
+.btn:first-child:active,
+.btn.active {
+  background-color: var(--primary-blue-400);
+  border-color: var(--primary-blue-400);
+}
+
+.custom-input {
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-blue-400);
+}
+
+.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: none;
+}
+
+.form-control:disabled {
+  background-color: var(--gray-light);
+}
+
+.btn-close:focus {
+  box-shadow: none;
+}
+
+.invalid-feedback {
+  margin-left: 34%;
+}
