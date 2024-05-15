@@ -86,7 +86,7 @@ export class SigninPageComponent {
       })).subscribe({
       next: (resUser) => {
         if (resUser.status == SUCCESS_CODE) {
-          // this.commonFunctionsService.showAlertSuccess(res.message);
+         
           let userData: UserDetails = resUser.data as UserDetails;
           let user = new User();
           user.email = this.loginForm.get('email')?.value;

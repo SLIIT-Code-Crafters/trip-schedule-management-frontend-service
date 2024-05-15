@@ -14,6 +14,6 @@ export const USER_ROLE_ORGANIZER = 'TO';
 export const USER_ROLE_PARTICIPANT = 'TP';
 export const USER_ROLE_ADMINISTRATOR = 'SA';
 
-export const ENVIRONMENT1 = 'https://fohtljhhuc.execute-api.ap-southeast-1.amazonaws.com/prod/';
-export const ENVIRONMENT2 = 'https://78s6fnyfl5.execute-api.ap-southeast-1.amazonaws.com/prod/';
+export const AUTHSERVICE = 'https://fohtljhhuc.execute-api.ap-southeast-1.amazonaws.com/prod/';
+export const TRIPSERVICE = 'https://78s6fnyfl5.execute-api.ap-southeast-1.amazonaws.com/prod/';
 
