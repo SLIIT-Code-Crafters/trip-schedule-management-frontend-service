@@ -4,36 +4,17 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cross-click')"></button>
     </div>
     <div class="modal-body">
-      <form>
         <div class="wrapper">
-            <div class="box">
-              <div class="js--image-preview"></div>
-              <div class="upload-options">
-                <label>
-                  <input type="file" class="image-upload" accept="image/*">
-                </label>
-              </div>
-            </div>
-          
-            <div class="box">
-              <div class="js--image-preview"></div>
-              <div class="upload-options">
-                <label>
-                  <input type="file" class="image-upload" accept="image/*">
-                </label>
-              </div>
-            </div>
-          
-            <div class="box">
-              <div class="js--image-preview"></div>
-              <div class="upload-options">
-                <label>
-                  <input type="file" class="image-upload" accept="image/*">
-                </label>
-              </div>
-            </div>
+          <div class="box" *ngFor="let item of mediaList">
+            <button type="button" class="btn-close" aria-label="Close" (click)="removeImage(item.id)"></button>
+            <app-image-uploader [openedTask]="openTask" [previewImage]="item.uniqueName"></app-image-uploader>
           </div>
-      </form>
+
+          <div class="box">
+            <button type="button" class="btn-close" aria-label="Close" (click)="removeImage('')"></button>
+            <app-image-uploader></app-image-uploader>
+          </div>
+
     </div>
     <div class="modal-footer cuz-btn">
       <button type="button" class="btn btn-primary cuz-blue-btn"

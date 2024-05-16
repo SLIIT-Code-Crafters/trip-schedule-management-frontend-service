@@ -8,6 +8,7 @@ import {CommonFunctionsService} from "../common/common-functions.service";
 import {TripCategoryResponseBody} from "../../interfaces/response/TripCategoryResponseBody";
 import {TRIPSERVICE} from "../../utility/common/common-constant";
 import {OrganizedTrip} from "../../interfaces/create-trip/OrganizedTrip";
+import {TripOrganizeResponseBody} from "../../interfaces/response/TripOrganizeResponseBody";
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +43,9 @@ export class OrganizerService {
     return this.http.delete<CommonResponse<OrganizedTrip>>(url, {params: httpParams});
   }
 
-  getAllOrganizedTrip(paramMap: Map<string, string>): Observable<CommonResponse<TripCategoryResponseBody>> {
-    const url = `${TRIPSERVICE}api/v1/private/trip-categories/get-all?requestId=getTripCat`;
+  getAllOrganizedTrip(paramMap: Map<string, string>): Observable<CommonResponse<TripOrganizeResponseBody>> {
+    const url = `${TRIPSERVICE}api/v1/private/trip/get-trip-details-by-id?requestId=getTripCat`;
     let httpParams = this.commonService.getDataTableHttpParam(paramMap);
-    return this.http.get<CommonResponse<TripCategoryResponseBody>>(url, {params: httpParams});
+    return this.http.get<CommonResponse<TripOrganizeResponseBody>>(url, {params: httpParams});
   }
 }

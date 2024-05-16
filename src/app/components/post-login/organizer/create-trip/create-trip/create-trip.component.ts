@@ -1,6 +1,14 @@
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder, FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {OptionModalComponent} from '../shared/option-modal/option-modal.component';
 import {DatatableComponent, NgxDatatableModule} from '@swimlane/ngx-datatable';
@@ -10,9 +18,12 @@ import {
 import {HeaderComponent} from "../../../../shared/header/header.component";
 import {TripOption} from "../../../../../interfaces/create-trip/create-trip-option/TripOption";
 import {AppToastService} from "../../../../../services/toastr/toast.service";
-import {ADD_TASK, UPDATE_TASK, VIEW_TASK} from "../../../../../utility/common/common-constant";
+import {ADD_TASK, DATE_FORMAT_1, UPDATE_TASK, VIEW_TASK} from "../../../../../utility/common/common-constant";
 import {CreateTripOption} from "../../../../../interfaces/create-trip/create-trip-option/CreateTripOption";
 import { MediaModalComponent } from '../shared/media-modal/media-modal.component';
+import {CommonFunctionsService} from "../../../../../services/common/common-functions.service";
+import {LocalStorageService} from "../../../../../services/storage/local-storage.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-trip',
@@ -20,9 +31,11 @@ import { MediaModalComponent } from '../shared/media-modal/media-modal.component
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgxDatatableModule,
     HeaderComponent,
   ],
+  providers: [DatePipe],
   templateUrl: './create-trip.component.html',
   styleUrls: ['./create-trip.component.scss']
 })
@@ -32,27 +45,78 @@ export class CreateTripComponent implements OnInit, OnDestroy {
   @ViewChild('catTable', {static: true}) catTable: DatatableComponent | undefined;
   @ViewChild('actionOne', {static: true}) actionOne: TemplateRef<any> | undefined;
 
+  protected tripCategoryList:{id:string, description:string}[] = [];
+
   protected columnsWithFeatures: any;
   private dataWithFeatures: TripOption[] = [];
   protected viewDataWithFeatures: CreateTripOption[] = [];
 
+  private todayDate: string = '';
+  protected minDateFromDate: string = '';
+  protected minDateToDate: string = '';
+
   searchText: any;
+
+  protected createTripForm: FormGroup;
 
   protected openTask:string = ADD_TASK;
 
   constructor(
     private modalService: NgbModal,
     private toastService: AppToastService,
+    private formBuilder: FormBuilder,
+    private datePipe: DatePipe,
+    private commonService: CommonFunctionsService,
+    private storageService: LocalStorageService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {
+    this.createTripForm = formBuilder.group({
+      id: [null, [Validators.required, commonService.noWhitespaceValidator]],
+      tripCategoryList: [null, [Validators.required]],
+      tripName:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      description:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      fromDate:  [null, [Validators.required]],
+      toDate:  [null, [Validators.required]],
+      reservationCloseDate:  [null, [Validators.required]],
+      finalCancelDate:  [null, [Validators.required]],
+      maxParticipantCount:  [null, [Validators.required]],
+      advertise_tripName:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      adertise_tripDetails:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      tripOptionList: [null],
+      documents:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      documentList: [null],
+      status:  [null]
+    }, {validators:this.toDateGreaterThanFromDateValidator});
   }
 
   ngOnInit(): void {
+    this.activatedRoute.data.subscribe((data)=>{
+      this.tripCategoryList = data['categoryList'];
+    });
     this.dataWithFeatures = [];
     this.viewDataWithFeatures = [];
+    this.todayDate = this.datePipe.transform(new Date(), DATE_FORMAT_1)!.toString();
+    this.minDateFromDate = this.todayDate;
+    this.minDateToDate = this.todayDate;
+    switch (this.openTask) {
+      case ADD_TASK:
+        this.getFormId?.clearValidators();
+        break;
+    }
+
     this._setTableFeatures();
-    this.getPageLoadData();
+    this.refreshDataSet();
   }
 
+  protected getChangeTripCategory(catVal: string){
+    if(catVal){
+      this.getFormTripCategoryList?.setValue([catVal]);
+    }else{
+      this.getFormTripCategoryList?.setValue([]);
+    }
+    console.log(this.getFormTripCategoryList?.value)
+  }
 
   private _setTableFeatures() {
     this.columnsWithFeatures = [
@@ -70,113 +134,6 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     ];
   }
 
-  // get page initial loading data form API
-  private getPageLoadData() {
-    this.dataWithFeatures = [
-      {
-        id: '001',
-        displayName: 'dis001',
-        optionsSet: [
-          {
-            id: "1",
-            title: "Product A",
-            description: "High-quality product",
-            cost: "$50.00"
-          },
-          {
-            id: "2",
-            title: "Product B",
-            description: "Affordable option",
-            cost: "$25.99"
-          },
-        ]
-      },
-      {
-        id: '002',
-        displayName: 'dis002',
-        optionsSet: [
-          {
-            id: "2",
-            title: "Product B",
-            description: "Affordable option",
-            cost: "$25.99"
-          },
-        ]
-      },
-      {
-        id: '003',
-        displayName: 'dis003',
-        optionsSet: [
-          {
-            id: "1",
-            title: "Product A",
-            description: "High-quality product",
-            cost: "$50.00"
-          },
-        ]
-      },
-      {
-        id: '004',
-        displayName: 'dis005',
-        optionsSet: []
-      },
-      {
-        id: '005',
-        displayName: 'dis006',
-        optionsSet: [
-          {
-            id: "1",
-            title: "Product A",
-            description: "High-quality product",
-            cost: "$50.00"
-          },
-          {
-            id: "2",
-            title: "Product B",
-            description: "Affordable option",
-            cost: "$25.99"
-          },
-          {
-            id: "3",
-            title: "Product A",
-            description: "High-quality product",
-            cost: "$50.00"
-          },
-        ]
-      },
-      {
-        id: '006',
-        displayName: 'dis007',
-        optionsSet: [
-          {
-            id: "2",
-            title: "Product B",
-            description: "Affordable option",
-            cost: "$25.99"
-          },
-        ]
-      },
-      {
-        id: '007',
-        displayName: 'dis008',
-        optionsSet: []
-      },
-      {
-        id: '008',
-        displayName: 'dis009',
-        optionsSet: [
-          {
-            id: "2",
-            title: "Product B",
-            description: "Affordable option",
-            cost: "$25.99"
-          },
-        ]
-      }
-    ];
-    this.refreshDataSet();
-  }
-
   ngOnDestroy() {
     if (this.modalRef) {
       this.modalRef.dismiss();
@@ -191,8 +148,8 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     this.modalRef.componentInstance.openedTask = ADD_TASK;
     this.modalRef.componentInstance.passEntry.subscribe((option: TripOption) => {
       if (option) {
-        this.dataWithFeatures.push(option);
         option.id = Math.random().toString(36).substr(2, 8);
+        this.dataWithFeatures.push(option);
         this.refreshDataSet();
         this.toastService.successMessage('Options was added successfully');
         this.modalRef?.close();
@@ -255,14 +212,92 @@ export class CreateTripComponent implements OnInit, OnDestroy {
   }
 
   private refreshDataSet() {
+    this.getFormTripOptionList?.setValue(this.dataWithFeatures)
     this.viewDataWithFeatures = this.dataWithFeatures.map(val => {
       let tripOption: CreateTripOption = {
         id: val.id,
-        displayName: val.displayName,
-        optionCount: val.optionsSet.length.toString()
+        displayName: val.name,
+        optionCount: val.tripOptionSelection.length.toString()
       }
       return tripOption;
     });
   }
 
+  protected clickPublish(){
+    console.log(this.createTripForm)
+  }
+
+  private toDateGreaterThanFromDateValidator(formGroup:FormGroup) {
+      const fromDate = formGroup.get('fromDate')?.value;
+      const toDate = formGroup.get('toDate')?.value;
+      if (fromDate && toDate && toDate < fromDate) {
+        return formGroup.get('toDate')?.setErrors({'toDateLessThanFromDate': true});
+      }else if(formGroup.get('toDate')?.hasError('toDateLessThanFromDate')){
+          return formGroup.get('toDate')?.setErrors(null);
+      }
+  }
+
+  get getFormId(){
+    return this.createTripForm.get('id');
+  }
+
+  get getFormTripCategoryList(){
+    return this.createTripForm.get('tripCategoryList');
+  }
+
+  get getFormTripName(){
+    return this.createTripForm.get('tripName');
+  }
+
+  get getFormDescription(){
+    return this.createTripForm.get('description');
+  }
+
+  get getFormFromDate(){
+    return this.createTripForm.get('fromDate');
+  }
+
+  get getFormToDate(){
+    return this.createTripForm.get('toDate');
+  }
+
+  get getForm(){
+    return this.createTripForm.get('');
+  }
+
+  get getFormReservationCloseDate(){
+    return this.createTripForm.get('reservationCloseDate');
+  }
+
+  get getFormFinalCancelDate(){
+    return this.createTripForm.get('finalCancelDate');
+  }
+
+  get getFormMaxParticipantCount(){
+    return this.createTripForm.get('maxParticipantCount');
+  }
+
+  get getFormAdvertise_tripName(){
+    return this.createTripForm.get('advertise_tripName');
+  }
+
+  get getFormAdertise_tripDetails(){
+    return this.createTripForm.get('adertise_tripDetails');
+  }
+
+  get getFormTripOptionList(){
+    return this.createTripForm.get('tripOptionList');
+  }
+
+  get getFormDocuments(){
+    return this.createTripForm.get('documents');
+  }
+
+  get getFormDocumentList(){
+    return this.createTripForm.get('documentList');
+  }
+
+  get getFormStatus(){
+    return this.createTripForm.get('status');
+  }
 }

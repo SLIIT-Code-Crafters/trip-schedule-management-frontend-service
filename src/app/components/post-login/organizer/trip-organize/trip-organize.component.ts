@@ -15,13 +15,14 @@ import {
 } from "../../../../utility/common/common-constant";
 import {PaginatorData} from "../../../../interfaces/PaginatorData";
 import {AppToastService} from "../../../../services/toastr/toast.service";
-import {SUCCESS_CODE} from "../../../../utility/common/response-code";
 import {OrganizedTrip} from "../../../../interfaces/create-trip/OrganizedTrip";
 import {OrganizerService} from "../../../../services/organizer/organizer.service";
 import {Router} from "@angular/router";
 import {
   TripDeleteModalComponentComponent
 } from "../shared/trip-delete-modal-component/trip-delete-modal-component.component";
+import {SUCCESS_CODE} from "../../../../utility/common/response-code";
+import {LocalStorageService} from "../../../../services/storage/local-storage.service";
 
 @Component({
   selector: 'app-trip-organize',
@@ -54,11 +55,15 @@ export class TripOrganizeComponent implements OnInit, OnDestroy {
     count: 0
   };
 
+  private logUserEmail:string = '';
+  private logUserId:string = '';
+
   constructor(
     private modalService: NgbModal,
     private toastService: AppToastService,
     private organizerService: OrganizerService,
-    private router: Router
+    private router: Router,
+    private storageService:LocalStorageService,
   ) {
   }
 
@@ -68,23 +73,31 @@ export class TripOrganizeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.viewDataWithFeatures = [];
-    this._setTableFeatures();
-    this.getPageLoadData(this.setDataTableParam({
-      limit: DEFAULT_PAGE_SIZE,
-      pageSize: DEFAULT_PAGE_SIZE,
-      offset: 1,
-      count: 0
-    }));
+    if(this.storageService.getUserSession() && this.storageService.getUserSession()?.email && this.storageService.getUserSession()?.userId) {
+      this.logUserId = this.storageService.getUserSession()?.userId!;
+      this.logUserEmail = this.storageService.getUserSession()?.email!;
+
+      this._setTableFeatures();
+      this.getPageLoadData(this.setDataTableParam({
+        limit: DEFAULT_PAGE_SIZE,
+        pageSize: DEFAULT_PAGE_SIZE,
+        offset: 1,
+        count: 0
+      }));
+    }else{
+      this.storageService.clearSessionStorage();
+      this.router.navigate(['/']);
+    }
   }
 
 
   private _setTableFeatures() {
     this.columnsWithFeatures = [
-      {prop: 'id', name: "ID", width: 20, sortable: true},
-      {name: "CODE", width: 70, sortable: true},
+      {name: "ID", prop: 'id', width: 70, sortable: true},
       {name: 'NAME',prop:'tripName', width: 140, sortable: true},
       {name: 'DESCRIPTION', width: 170, sortable: false},
-      {name: 'CREATED DATE', width: 100, sortable: true},
+      {name: 'FROM DATE', prop:'fromDate', width: 100, sortable: true},
+      {name: 'TO DATE', prop:'toDate', width: 100, sortable: true},
       {
         prop: 'action',
         name: 'ACTION',
@@ -98,6 +111,7 @@ export class TripOrganizeComponent implements OnInit, OnDestroy {
 
   setDataTableParam(pgInfo: PaginatorData): Map<string, string> {
     let searchMap = new Map<string, string>();
+    searchMap.set('userId', this.logUserId);
     searchMap.set('pageNo', pgInfo.offset.toString());
     searchMap.set('pageSize', pgInfo.pageSize.toString());
     if (this.searchTextParams) {
@@ -120,82 +134,29 @@ export class TripOrganizeComponent implements OnInit, OnDestroy {
 
   private getPageLoadData(paramMap: Map<string, string>, pageInfo?: PaginatorData) {
     this.viewDataWithFeatures = [];
-    this.paginationData.count = 3;
-    this.paginationData.offset = pageInfo?.offset || 0;
-    this.viewDataWithFeatures = [
-      {
-      id: "1",
-      code: "TRP001",
-      tripCategory: "Adventure",
-      tripName: "Hiking Expedition",
-      description: "Experience the thrill of hiking through breathtaking landscapes.",
-      fromDate: "2024-06-15",
-      toDate: "2024-06-20",
-      closingDate: "2024-05-15",
-      finalCancelDate: "2024-06-01",
-      maxParticipationCount: "20",
-      advertisementName: "Explore the Wild",
-      advertisementDescription: "Join us on this adventurous journey into the wilderness.",
-      tipOptionList: [
-        { id: "1", displayName: "Standard Package", optionsSet: [] },
-        { id: "2", displayName: "Premium Package",  optionsSet: []}
-      ],
-      mediaList: [
-        { id: "1", displayName: "image", media: "https://example.com/hiking1.jpg" },
-        { id: "2", displayName: "image", media: "https://example.com/hiking2.jpg" }
-      ],
-      status: "active",
-      createdBy: "Organizer123",
-      createdDate: "2024-04-10"
-    },{
-      id: "2",
-      code: "TRP002",
-      tripCategory: "Cultural",
-      tripName: "Historical Tour",
-      description: "Explore ancient ruins and learn about the rich history of the region.",
-      fromDate: "2024-07-10",
-      toDate: "2024-07-15",
-      closingDate: "2024-06-30",
-      finalCancelDate: "2024-07-05",
-      maxParticipationCount: "15",
-      advertisementName: "Journey Through Time",
-      advertisementDescription: "Embark on a historical voyage filled with fascinating stories.",
-      tipOptionList: [
-        { id: "1", displayName: "Basic Package",  optionsSet: []},
-        { id: "2", displayName: "Deluxe Package",  optionsSet: []}
-      ],
-      mediaList: [
-        { id: "1", displayName: "image", media: "https://example.com/history1.jpg" },
-        { id: "2", displayName: "image", media: "https://example.com/history2.jpg" }
-      ],
-      status: "active",
-      createdBy: "HistoryBuff99",
-      createdDate: "2024-05-20"
-    },{
-      id: "3",
-      code: "TRP003",
-      tripCategory: "Relaxation",
-      tripName: "Beach Retreat",
-      description: "Unwind and enjoy the sun, sand, and sea at our luxurious beach resort.",
-      fromDate: "2024-08-20",
-      toDate: "2024-08-25",
-      closingDate: "2024-07-31",
-      finalCancelDate: "2024-08-10",
-      maxParticipationCount: "25",
-      advertisementName: "Sunset Paradise",
-      advertisementDescription: "Escape to paradise and experience ultimate relaxation.",
-      tipOptionList: [
-        { id: "1", displayName: "Standard Package",  optionsSet: []},
-        { id: "2", displayName: "VIP Package",  optionsSet: []}],
-      mediaList: [
-        { id: "1", displayName: "image", media: "https://example.com/beach1.jpg" },
-        { id: "2", displayName: "image", media: "https://example.com/beach2.jpg" }
-      ],
-      status: "active",
-      createdBy: "BeachLover123",
-      createdDate: "2024-06-15"
-    }];
     
+    this.organizerService.getAllOrganizedTrip(paramMap).subscribe({
+      next: (res) => {
+        if (res.status == SUCCESS_CODE) {
+          this.viewDataWithFeatures = res.data.tripDto;
+          this.paginationData.count = res.data.count;
+          this.paginationData.offset = pageInfo?.offset || 0;
+        } else {
+          this.viewDataWithFeatures = [];
+          this.paginationData.count = 0;
+          this.paginationData.offset = pageInfo?.offset || 0;
+          this.toastService.warningMessage(res.message);
+        }
+      },
+      error: (err) => {
+        if (err.error && err.error.message) {
+          this.viewDataWithFeatures = [];
+          this.paginationData.count = 0;
+          this.paginationData.offset = pageInfo?.offset || 0;
+          this.toastService.errorMessage(err.error.message);
+        }
+      }
+    })
   }
 
   addNewTrip() {

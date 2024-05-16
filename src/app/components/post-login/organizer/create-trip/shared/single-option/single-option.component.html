@@ -6,9 +6,9 @@
   <div class="d-flex justify-content-between" [formGroup]="subForm">
     <div class="form-section">
       <div class="row mb-2">
-        <label for="inputOptionTitle" class="form-label">Option Title</label>
-        <input type="text" class="form-control custom-input" id="inputOptionTitle" name="title" formControlName="title"
-               [ngClass]="(formTitle?.touched && !formTitle?.disabled)?(formTitle?.valid)?'is-valid':'is-invalid':''">
+        <label for="inputOptionName" class="form-label">Option Title</label>
+        <input type="text" class="form-control custom-input" id="inputOptionName" name="name" formControlName="name"
+               [ngClass]="(formName?.touched && !formName?.disabled)?(formName?.valid)?'is-valid':'is-invalid':''">
         <div class="invalid-feedback" id="inputOptionTitleFeedback">Option Title is Required</div>
       </div>
       <div class="row mb-2">
@@ -27,7 +27,7 @@
     </div>
     <div class="button-set">
       <button type="button" class="btn btn-primary cuz-blue-btn px-1 custom-button-remove mb-2" (click)="removeOption()"
-              *ngIf="arrayLength>1">Remove
+              *ngIf="(arrayLength>1 && (openedTask==ADD_TASK || openedTask==UPDATE_TASK))">Remove
       </button>
     </div>
   </div>

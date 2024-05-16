@@ -47,4 +47,9 @@ export class AdminService {
     let httpParams = this.commonService.getDataTableHttpParam(paramMap);
     return this.http.get<CommonResponse<TripCategoryResponseBody>>(url, {params: httpParams});
   }
+
+  getAllTripCategoryList(): Observable<CommonResponse<TripCategoryResponseBody>> {
+    const url = `${TRIPSERVICE}api/v1/private/trip-categories/get-all?status=ACTIVE&requestId=getTripCat`;
+    return this.http.get<CommonResponse<TripCategoryResponseBody>>(url);
+  }
 }

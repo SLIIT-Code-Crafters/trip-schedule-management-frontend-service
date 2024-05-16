@@ -7,65 +7,86 @@
           <h4>Create Trip</h4>
         </div>
         <div class="container row table-action-set">
-          <form>
+          <form [formGroup]="createTripForm">
             <div class="row mb-3 single-row">
               <label for="inputTripCategory" class="form-label">Trip Category</label>
-              <input type="text" class="form-control custom-input" id="inputTripCategory" name="category" maxlength="200">
-              <div class="invalid-feedback" id="inputIdFeedback" *ngIf="false">Trip Category is Required</div>
+              <select class="form-control custom-input" id="inputTripCategory" #catVal  (change)="getChangeTripCategory(catVal.value)"
+              [ngClass]="(getFormTripCategoryList?.touched && !getFormTripCategoryList?.disabled)?(getFormTripCategoryList?.valid)?'is-valid':'is-invalid':''">
+                <option value="" selected>-- Select Trip Category --</option>
+                <option *ngFor="let category of tripCategoryList" [value]="category.id">{{category.description}}</option>
+              </select>
+
+              <div class="invalid-feedback" id="inputTripCategoryFeedback"
+                   *ngIf="getFormTripCategoryList?.errors?.['required'] || getFormTripCategoryList?.errors?.['whitespace']">Trip Category is Required
+              </div>
             </div>
             <div class="row mb-3 single-row">
               <label for="inputTripName" class="form-label">Trip Name</label>
-              <input type="text" class="form-control custom-input" id="inputTripName" name="name"
-                     maxlength="200">
-              <div class="invalid-feedback" id="inputTitleFeedback" *ngIf="false">Trip Name is
-                Required
+              <input type="text" class="form-control custom-input" id="inputTripName" name="tripName" formControlName="tripName" maxlength="200"
+                     [ngClass]="(getFormTripName?.touched && !getFormTripName?.disabled)?(getFormTripName?.valid)?'is-valid':'is-invalid':''">
+              <div class="invalid-feedback" id="inputTripNameFeedback"
+                   *ngIf="getFormTripName?.errors?.['required'] || getFormTripName?.errors?.['whitespace']">Trip Name is Required
               </div>
             </div>
             <div class="row mb-3 single-row">
               <label for="inputDescription" class="form-label">Description</label>
-              <textarea rows="3" class="form-control custom-input" id="inputDescription" name="description"></textarea>
-              <div class="invalid-feedback" id="inputDescriptionFeedback" *ngIf="false">
-                Description is Required
+              <textarea rows="3" class="form-control custom-input" id="inputDescription" formControlName="description" name="description"
+                        [ngClass]="(getFormDescription?.touched && !getFormDescription?.disabled)?(getFormDescription?.valid)?'is-valid':'is-invalid':''"></textarea>
+              <div class="invalid-feedback" id="inputDescriptionFeedback"
+                   *ngIf="getFormDescription?.errors?.['required'] || getFormDescription?.errors?.['whitespace']">Description is Required
               </div>
             </div>
             <div class="row mb-2">
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="inputFromDate" class="form-label">From Date</label>
-                  <input type="date" class="form-control custom-input" id="inputFromDate" name="fromDate">
-                  <div class="invalid-feedback" id="inputFromDateFeedback" *ngIf="false">From
-                    Date is Required
+                  <input type="date" class="form-control custom-input" id="inputFromDate" name="fromDate" formControlName="fromDate"
+                         [min]="minDateFromDate"
+                         [ngClass]="(getFormFromDate?.touched && !getFormFromDate?.disabled)?(getFormFromDate?.valid)?'is-valid':'is-invalid':''">
+                  <div class="invalid-feedback" id="inputFromDateFeedback"
+                       *ngIf="getFormFromDate?.errors?.['required'] || getFormFromDate?.errors?.['whitespace']">From Date is Required
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="inputToDate" class="form-label">To Date</label>
-                  <input type="date" class="form-control custom-input" id="inputToDate" name="toDate">
-                  <div class="invalid-feedback" id="inputToDateFeedback" *ngIf="false">To Date
-                    is Required
+                  <input type="date" class="form-control custom-input" id="inputToDate" name="toDate" formControlName="toDate"
+                         [min]="minDateToDate"
+                         [ngClass]="(getFormToDate?.touched && !getFormToDate?.disabled)?(getFormToDate?.valid)?'is-valid':'is-invalid':''">
+                  <div class="invalid-feedback" id="inputToDateFeedback"
+                       *ngIf="getFormToDate?.errors?.['required']">To Date is Required
                   </div>
                   <div class="invalid-feedback" id="inputToDateFeedback2"
-                       *ngIf="false">To Date must be greater than from date
+                       *ngIf="(getFormToDate?.errors?.['toDateLessThanFromDate'])">To Date must be greater than From date
                   </div>
                 </div>
               </div>
             </div>
-            
+           
             <div class="row mb-3 single-row">
               <label for="inputClosingDate" class="form-label">Reservation Closing Date</label>
-              <input type="date" class="form-control custom-input" id="inputClosingDate" name="closingDate" maxlength="200">
-              <div class="invalid-feedback" id="inputIdFeedback" *ngIf="false">Reservation Closing Date is Required</div>
+              <input type="date" class="form-control custom-input" id="inputClosingDate" name="reservationCloseDate" formControlName="reservationCloseDate" maxlength="200"
+                     [ngClass]="(getFormReservationCloseDate?.touched && !getFormReservationCloseDate?.disabled)?(getFormReservationCloseDate?.valid)?'is-valid':'is-invalid':''">
+              <div class="invalid-feedback" id="inputClosingDateFeedback"
+                   *ngIf="getFormReservationCloseDate?.errors?.['required'] || getFormReservationCloseDate?.errors?.['whitespace']">Reservation Closing Date is Required
+              </div>
             </div>
             <div class="row mb-3 single-row">
               <label for="inputCancelationDate" class="form-label">Final Cancelation Date</label>
-              <input type="date" class="form-control custom-input" id="inputCancelationDate" name="cancelationDate">
-              <div class="invalid-feedback" id="inputIdFeedback" *ngIf="false">Final Cancelation Date is Required</div>
+              <input type="date" class="form-control custom-input" id="inputCancelationDate" name="finalCancelDate" formControlName="finalCancelDate"
+                     [ngClass]="(getFormFinalCancelDate?.touched && !getFormFinalCancelDate?.disabled)?(getFormFinalCancelDate?.valid)?'is-valid':'is-invalid':''">
+              <div class="invalid-feedback" id="inputCancelationDateFeedback"
+                   *ngIf="getFormFinalCancelDate?.errors?.['required'] || getFormFinalCancelDate?.errors?.['whitespace']">Final Cancelation Date is Required
+              </div>
             </div>
             <div class="row mb-3 single-row">
               <label for="inputMaxParticipantCount" class="form-label">Maximum Participant Count</label>
-              <input type="number" class="form-control custom-input" id="inputMaxParticipantCount" name="maxParticipantCount">
-              <div class="invalid-feedback" id="inputIdFeedback" *ngIf="false">Maximum Participant Count is Required</div>
+              <input type="number" class="form-control custom-input" id="inputMaxParticipantCount" name="maxParticipantCount" formControlName="maxParticipantCount"
+                     [ngClass]="(getFormMaxParticipantCount?.touched && !getFormMaxParticipantCount?.disabled)?(getFormMaxParticipantCount?.valid)?'is-valid':'is-invalid':''">
+              <div class="invalid-feedback" id="inputMaxParticipantCountFeedback"
+                   *ngIf="getFormMaxParticipantCount?.errors?.['required'] || getFormMaxParticipantCount?.errors?.['whitespace']">Maximum Participant Count is Required
+              </div>
             </div>
 
             <div class="col">
@@ -79,32 +100,39 @@
 
             <div class="row mb-3 single-row">
               <label for="inputAdvertisementTripName" class="form-label">Advertisement Trip Name</label>
-              <input type="text" class="form-control custom-input" id="inputAdvertisementTripName" name="name"
-                     maxlength="200">
-              <div class="invalid-feedback" id="inputTitleFeedback" *ngIf="false">Advertisement Trip Name is
-                Required
+              <input type="text" class="form-control custom-input" id="inputAdvertisementTripName" name="advertise_tripName" formControlName="advertise_tripName" maxlength="200"
+                     [ngClass]="(getFormAdvertise_tripName?.touched && !getFormAdvertise_tripName?.disabled)?(getFormAdvertise_tripName?.valid)?'is-valid':'is-invalid':''">
+              <div class="invalid-feedback" id="inputAdvertisementTripNameFeedback"
+                   *ngIf="getFormAdvertise_tripName?.errors?.['required'] || getFormAdvertise_tripName?.errors?.['whitespace']">Advertisement Trip Name is Required
               </div>
             </div>
             <div class="row mb-3 single-row">
               <label for="inputAdvertisementTripDescription" class="form-label">Advertisement Trip Description</label>
-              <textarea rows="3" class="form-control custom-input" id="inputAdvertisementTripDescription" name="description"></textarea>
-              <div class="invalid-feedback" id="inputDescriptionFeedback" *ngIf="false">
-                Advertisement Trip Description is Required
+              <textarea rows="3" class="form-control custom-input" id="inputAdvertisementTripDescription" name="adertise_tripDetails" formControlName="adertise_tripDetails"
+                        [ngClass]="(getFormAdertise_tripDetails?.touched && !getFormAdertise_tripDetails?.disabled)?(getFormAdertise_tripDetails?.valid)?'is-valid':'is-invalid':''"></textarea>
+              <div class="invalid-feedback" id="inputAdvertisementTripDescriptionFeedback"
+                   *ngIf="getFormAdertise_tripDetails?.errors?.['required'] || getFormAdertise_tripDetails?.errors?.['whitespace']">Advertisement Trip Description is Required
               </div>
             </div>
 
             <div class="col">
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary cuz-blue-btn px-4 w-25 custom-button-green">
+                <button type="button" (click)="clickPublish()" class="btn btn-primary cuz-blue-btn px-4 w-25 custom-button-green">
                   Publish
                 </button>
               </div>
             </div>
 
           </form>
-          
+         
         </div>
       </div>
+      <div class="table-action-card">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="fw-semibold">Options List</p>
+          </div>
+        </div>
       <section class="table">
         <ngx-datatable class="material" tableClass="table table-striped table-bordered table-hover" #catTable
                        [rows]="viewDataWithFeatures"
@@ -130,6 +158,7 @@
           </ng-template>
         </ngx-datatable>
       </section>
+      </div>
     </div>
   </div>
 </div>

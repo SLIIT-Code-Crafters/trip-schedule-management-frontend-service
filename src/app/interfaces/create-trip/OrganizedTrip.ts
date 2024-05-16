@@ -1,25 +1,28 @@
 import {TripOption} from "./create-trip-option/TripOption";
 import {TripMedia} from "./create-trip-option/TripMedia";
+import {TripCategory} from "../trip-category/TripCategory";
 
 export interface OrganizedTrip {
   id: string;
-  code: string;
 
-  tripCategory: string;
+  tripCategoryList: TripCategory[];
   tripName: string;
   description: string;
   fromDate: string;
   toDate: string;
-  closingDate: string;
+  reservationCloseDate: string;
   finalCancelDate: string;
-  maxParticipationCount: string;
-  advertisementName: string;
-  advertisementDescription: string;
+  maxParticipantCount: string;
+  advertise_tripName: string;
+  adertise_tripDetails: string;
 
-  tipOptionList:TripOption[];
-  mediaList:TripMedia[];
+  tripOptionList:TripOption[];
+
+  documents: string;
+  documentList:TripMedia[];
 
   status: string;
+
   createdBy: string;
   createdDate: string;
 }
