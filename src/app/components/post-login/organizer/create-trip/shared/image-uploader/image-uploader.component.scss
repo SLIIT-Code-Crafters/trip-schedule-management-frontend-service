@@ -1,0 +1,191 @@
+.cuz-blue-btn {
+  background-color: var(--app-primary-blue);
+}
+.cuz-btn {
+  button{
+    width: 100px;
+  }
+}
+.modal-body {
+  padding: 30px;
+}
+.modal-content {
+  border: none;
+}
+.modal-header{
+  background: var(--primary-blue-100);
+}
+
+hr{
+  margin: 20px 0;
+  border-top: 2px dashed #888888;
+  opacity: 0.25;
+}
+
+.custom-button{
+  background-color: var(--primary-blue-500);
+  border-color: var(--primary-blue-400);
+}
+:not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active{
+  background-color: var(--primary-blue-400);
+  border-color: var(--primary-blue-400);
+}
+.custom-input{
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus{
+  border-color: var(--primary-blue-400);
+}
+.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+  box-shadow: none;
+}
+.form-control:focus , .form-select:focus{
+  box-shadow: none;
+}
+.btn-close:focus {
+  box-shadow: none;
+}
+.single-row{
+  label {
+    width: 32%;
+  }
+
+  input,
+  textarea {
+    width: 66%;
+  }
+  .invalid-feedback {
+    margin-left: 30%;
+  }
+}
+.form-control:disabled {
+  background-color: #f1f1f1;
+  opacity: 1;
+}
+.form-control:disabled {
+  background-color: var(--gray-light);
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-family: inherit;
+  margin: 0 0 .75em 0;
+  color: var(--primary-blue-400);
+  text-align: center;
+}
+
+.upload-options {
+  position: relative;
+  height: 40px;
+  background-color: var(--primary-blue-500);
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  transition: background-color ease-in-out 150ms;
+  &:hover {
+    background-color: var(--primary-blue-400);
+  }
+  & input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  & label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    &::after {
+      content: '+';
+      font-family: 'Material Icons';
+      position: absolute;
+      font-size: 18px;
+      font-weight: 800;
+      color: rgba(230, 230, 230, 1);
+      top: calc(50% - 20px);
+      left: calc(50% - 1.25rem);
+      z-index: 0;
+    }
+    & span {
+      display: inline-block;
+      width: 50%;
+      height: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      vertical-align: middle;
+      text-align: center;
+      &:hover i.material-icons {
+        color: lightgray;
+      }
+    }
+  }
+}
+
+
+.js--image-preview {
+  height: 225px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  &::after {
+    content: "";
+    font-family: 'Material Icons';
+    position: relative;
+    font-size: 4.5em;
+    color: rgba(230, 230, 230, 1);
+    top: calc(50% - 3rem);
+    left: calc(50% - 2.25rem);
+    z-index: 0;
+  }
+  &.js--no-default::after {
+    display: none;
+  }
+  &:nth-child(2) {
+    background-image: url('http://bastianandre.at/giphy.gif');
+  }
+}
+
+i.material-icons {
+  transition: color 100ms ease-in-out;
+  font-size: 2.25em;
+  line-height: 55px;
+  color: white;
+  display: block;
+}
+
+.drop {
+  display: block;
+  position: absolute;
+  background: var(--primary-blue-400);
+  border-radius: 100%;
+  transform:scale(0);
+}
+
+.animate {
+  animation: ripple 0.4s linear;
+}
+
+@keyframes ripple {
+  100% {opacity: 0; transform: scale(2.5);}
+}

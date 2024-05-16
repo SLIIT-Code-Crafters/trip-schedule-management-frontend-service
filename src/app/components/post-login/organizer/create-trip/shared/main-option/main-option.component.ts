@@ -4,7 +4,7 @@ import {SingleOptionComponent} from '../single-option/single-option.component';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AppToastService} from "../../../../../../services/toastr/toast.service";
 import {TripOption} from "../../../../../../interfaces/create-trip/create-trip-option/TripOption";
-import {UPDATE_TASK} from "../../../../../../utility/common/common-constant";
+import {ADD_TASK, UPDATE_TASK} from "../../../../../../utility/common/common-constant";
 
 @Component({
   selector: 'app-main-option',
@@ -20,6 +20,7 @@ import {UPDATE_TASK} from "../../../../../../utility/common/common-constant";
 export class MainOptionComponent implements OnInit {
 
   @Input() supOptionSet!: TripOption;
+  @Input() openedTask: string = '';
   @Output() removeOption: EventEmitter<string> = new EventEmitter();
   superFrom: FormGroup;
 
@@ -29,8 +30,8 @@ export class MainOptionComponent implements OnInit {
   ) {
     this.superFrom = this.fb.group({
       id: [null],
-      displayName: [null, [Validators.required]],
-      optionsSet: this.fb.array([]),
+      name: [null, [Validators.required]],
+      tripOptionSelection: this.fb.array([]),
     })
   }
 
@@ -41,13 +42,13 @@ export class MainOptionComponent implements OnInit {
   private _setForm() {
     if (this.supOptionSet) {
       this.fromId?.setValue(this.supOptionSet.id);
-      this.fromDisplayName?.setValue(this.supOptionSet.displayName);
-      if (this.supOptionSet.optionsSet && this.supOptionSet.optionsSet.length > 0) {
-        this.supOptionSet.optionsSet.forEach(op => {
+      this.fromDisplayName?.setValue(this.supOptionSet.name);
+      if (this.supOptionSet.tripOptionSelection && this.supOptionSet.tripOptionSelection.length > 0) {
+        this.supOptionSet.tripOptionSelection.forEach(op => {
           this.formOptionsArray.push(
             this.fb.group({
               id: [op.id, [Validators.required]],
-              title: [op.title, [Validators.required]],
+              name: [op.name, [Validators.required]],
               description: [op.description],
               cost: [op.cost, [Validators.required]],
             })
@@ -78,7 +79,7 @@ export class MainOptionComponent implements OnInit {
     this.formOptionsArray.push(
       this.fb.group({
         id: Math.random().toString(36).slice(2, 8),
-        title: ['', [Validators.required]],
+        name: ['', [Validators.required]],
         description: '',
         cost: ['', [Validators.required]]
       }));
@@ -93,11 +94,11 @@ export class MainOptionComponent implements OnInit {
   }
 
   get fromDisplayName() {
-    return this.superFrom.get('displayName');
+    return this.superFrom.get('name');
   }
 
   get formOptionsArray(): FormArray {
-    return this.superFrom.get('optionsSet') as FormArray;
+    return this.superFrom.get('tripOptionSelection') as FormArray;
   }
 
   get formOptionsArrayGroup(): FormGroup[] {
@@ -110,4 +111,5 @@ export class MainOptionComponent implements OnInit {
 
   protected readonly UPDATE_TASK = UPDATE_TASK;
 
+  protected readonly ADD_TASK = ADD_TASK;
 }

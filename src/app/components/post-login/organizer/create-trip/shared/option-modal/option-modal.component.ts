@@ -7,7 +7,7 @@ import {SingleOptionComponent} from "../single-option/single-option.component";
 import * as _ from 'lodash';
 import {AppToastService} from "../../../../../../services/toastr/toast.service";
 import {TripOption} from "../../../../../../interfaces/create-trip/create-trip-option/TripOption";
-import {ADD_TASK, UPDATE_TASK} from "../../../../../../utility/common/common-constant";
+import {ADD_TASK, UPDATE_TASK, VIEW_TASK} from "../../../../../../utility/common/common-constant";
 import {CreateTripOption} from "../../../../../../interfaces/create-trip/create-trip-option/CreateTripOption";
 
 @Component({
@@ -91,4 +91,5 @@ export class OptionModalComponent implements OnInit, OnDestroy {
 
   protected readonly UPDATE_TASK = UPDATE_TASK;
 
+  protected readonly ADD_TASK = ADD_TASK;
 }

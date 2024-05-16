@@ -7,13 +7,9 @@ import {AppComponent} from './app.component';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
-import {NgxSpinnerModule} from "ngx-spinner";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {Interceptor} from "./services/interceptors/Interceptor";
-import {
-  TripDeleteModalComponentComponent
-} from './components/post-login/organizer/shared/trip-delete-modal-component/trip-delete-modal-component.component';
-
+import {NgxSpinnerModule} from "ngx-spinner";
 const INTERCEPTORS = [{
   provide: HTTP_INTERCEPTORS,
   useClass: Interceptor,
@@ -25,7 +21,7 @@ const INTERCEPTORS = [{
 ];
 
 @NgModule({
-  declarations: [AppComponent, TripDeleteModalComponentComponent],
+  declarations: [AppComponent],
   providers: [INTERCEPTORS],
   bootstrap: [AppComponent],
   imports: [
@@ -41,7 +37,7 @@ const INTERCEPTORS = [{
       progressBar: true,
       timeOut: 2000
     }),
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
 })
 export class AppModule {

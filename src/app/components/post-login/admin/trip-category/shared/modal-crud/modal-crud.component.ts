@@ -9,6 +9,8 @@ import {CommonFunctionsService} from "../../../../../../services/common/common-f
 import {AppToastService} from "../../../../../../services/toastr/toast.service";
 import {ADD_TASK, DATE_FORMAT_1, UPDATE_TASK, VIEW_TASK} from "../../../../../../utility/common/common-constant";
 import {SUCCESS_CODE} from "../../../../../../utility/common/response-code";
+import {LocalStorageService} from "../../../../../../services/storage/local-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-modal-crud',
@@ -30,6 +32,8 @@ export class ModalCrudComponent implements OnInit {
   modalForm: FormGroup;
   modalLabel: string = '';
 
+  private logUserEmail:string = '';
+
   constructor(
     protected activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
@@ -37,6 +41,8 @@ export class ModalCrudComponent implements OnInit {
     private adminService: AdminService,
     private commonService: CommonFunctionsService,
     private toastService: AppToastService,
+    private storageService: LocalStorageService,
+    private router: Router,
   ) {
     this.modalForm = formBuilder.group({
       id: [null, [Validators.required, commonService.noWhitespaceValidator]],
@@ -48,8 +54,14 @@ export class ModalCrudComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._setModalCustomized();
-    this._setDataToFrom();
+    if(this.storageService.getUserSession() && this.storageService.getUserSession()?.email) {
+      this.logUserEmail = this.storageService.getUserSession()?.email!;
+      this._setModalCustomized();
+      this._setDataToFrom();
+    }else{
+      this.storageService.clearSessionStorage();
+      this.router.navigate(['/']);
+    }
   }
 
   private _setDataToFrom() {
@@ -131,7 +143,7 @@ export class ModalCrudComponent implements OnInit {
       code: this.getFormCode?.value.trim(),
       name: this.getFormName?.value.trim(),
       description: this.getFormDescription?.value.trim(),
-      createdBy: "banneheka.cp@gmail.com"
+      createdBy: this.logUserEmail
     }).subscribe({
       next: (res) => {
         if (res.status == SUCCESS_CODE) {
@@ -155,7 +167,7 @@ export class ModalCrudComponent implements OnInit {
       {
         name: this.getFormName?.value.trim(),
         description: this.getFormDescription?.value.trim(),
-        updatedBy: "banneheka.cp@gmail.com",
+        updatedBy: this.logUserEmail,
         status: (this.data?.status) ? this.data?.status : null
       }
     ).subscribe({

@@ -118,7 +118,7 @@ export class ContentModalCrudComponent implements OnInit {
     //check all data validate and this modal is not view
     if (this.modalForm.valid && this.openedTask && this.openedTask != VIEW_TASK) {
       if (this.openedTask == ADD_TASK) {
-        // this.getFormFormDate?.setValue(this.datePipe.transform(new Date(), DATE_FORMAT_1));
+       
       }
       if (this.openedTask == UPDATE_TASK && !this._isChangedData()) {
         this.toastService.warningMessage('There is no data changed');
@@ -154,15 +154,14 @@ export class ContentModalCrudComponent implements OnInit {
     return false;
   }
 
-  private _toDateGreaterThanFromDateValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const fromDate = this.getFormFromDate?.value;
-      const toDate = this.getFormToDate?.value;
-      if (fromDate && toDate && toDate < fromDate) {
-        return {toDateLessThanFromDate: true};
-      }
-      return null;
-    };
+  private _toDateGreaterThanFromDateValidator(formGroup:FormGroup) {
+    const fromDate = formGroup.get('fromDate')?.value;
+    const toDate = formGroup.get('toDate')?.value;
+    if (fromDate && toDate && toDate < fromDate) {
+      return formGroup.get('toDate')?.setErrors({'toDateLessThanFromDate': true});
+    }else if(formGroup.get('toDate')?.hasError('toDateLessThanFromDate')){
+      return formGroup.get('toDate')?.setErrors(null);
+    }
   }
 
   protected fileChangeFileEvent(event: any): void {

@@ -14,6 +14,7 @@ import {
 } from "./components/post-login/admin/site-content/sys-admin-site-content/sys-admin-site-content.component";
 import {TripOrganizeComponent} from "./components/post-login/organizer/trip-organize/trip-organize.component";
 import {CreateTripComponent} from "./components/post-login/organizer/create-trip/create-trip/create-trip.component";
+import {CreateTripResolver} from "./resolver/resolvers";
 
 const routes: Routes = [
   {
@@ -71,6 +72,7 @@ const routes: Routes = [
           },
           {
             path: 'create-trip',
+            resolve: {categoryList: CreateTripResolver},
             component: CreateTripComponent,
             pathMatch: 'full',
           },

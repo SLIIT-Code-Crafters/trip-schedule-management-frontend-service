@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {ADD_TASK, UPDATE_TASK} from "../../../../../../utility/common/common-constant";
 
 @Component({
   selector: 'app-single-option',
@@ -17,6 +18,7 @@ export class SingleOptionComponent implements OnChanges {
   @Input() subNumber: number = 0;
   @Input() arrayLength: number = 0;
   @Input() subForm!: FormGroup;
+  @Input() openedTask: string = '';
   @Output() removeSubOption: EventEmitter<string> = new EventEmitter();
 
   protected cardNumber: string = '01';
@@ -42,8 +44,8 @@ export class SingleOptionComponent implements OnChanges {
     return this.subForm.get('id');
   }
 
-  get formTitle() {
-    return this.subForm.get('title');
+  get formName() {
+    return this.subForm.get('name');
   }
 
   get formDescription() {
@@ -53,4 +55,7 @@ export class SingleOptionComponent implements OnChanges {
   get formCost() {
     return this.subForm.get('cost');
   }
+
+  protected readonly ADD_TASK = ADD_TASK;
+  protected readonly UPDATE_TASK = UPDATE_TASK;
 }

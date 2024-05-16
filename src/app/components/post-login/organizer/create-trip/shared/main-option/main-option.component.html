@@ -3,16 +3,17 @@
     <div class="row mb-2 pe-3">
       <label for="inputOptionName" class="form-label">Trip Option Display Name</label>
       <input type="text" class="form-control custom-input" id="inputOptionName" placeholder="Enter Option Display Name"
-             name="displayName" formControlName="displayName"
+             name="name" formControlName="name"
              [ngClass]="(fromDisplayName?.touched && !fromDisplayName?.disabled)?(fromDisplayName?.valid)?'is-valid':'is-invalid':''">
       <div class="invalid-feedback" id="inputCost">Trip Option Display Name is Required</div>
     </div>
     <div class="content-title">
       Available Options
     </div>
-    <div class="content" formArrayName="optionsSet">
+    <div class="content" formArrayName="tripOptionSelection">
       <div *ngFor="let subControl of formOptionsArrayGroup;let subIndex = index">
         <app-single-option [subForm]="subControl"
+                           [openedTask]="openedTask"
                            (removeSubOption)="removeSubOption($event)"
                            [subNumber]="subIndex"
                            [arrayLength]="formOptionsArray.length"
@@ -20,7 +21,7 @@
       </div>
       <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-primary cuz-blue-btn px-4 custom-button mb-2 me-4"
-                (click)="addOption()"><i class="bi bi-plus-lg"></i> Add
+                (click)="addOption()" *ngIf="openedTask==ADD_TASK || openedTask == UPDATE_TASK"><i class="bi bi-plus-lg"></i> Add
         </button>
       </div>
     </div>

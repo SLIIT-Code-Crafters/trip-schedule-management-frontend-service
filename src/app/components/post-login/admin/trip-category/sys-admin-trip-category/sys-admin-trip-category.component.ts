@@ -20,6 +20,8 @@ import {PaginatorData} from "../../../../../interfaces/PaginatorData";
 import {AppToastService} from "../../../../../services/toastr/toast.service";
 import {AdminService} from "../../../../../services/admin/admin.service";
 import {SUCCESS_CODE} from "../../../../../utility/common/response-code";
+import {LocalStorageService} from "../../../../../services/storage/local-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sys-admin-trip-category',
@@ -49,6 +51,8 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
   private searchTextParams: string = '';
   private searchStatusParams: string = STATUS_ACTIVE;
 
+  private logUserEmail:string = '';
+
   protected paginationData: PaginatorData = {
     limit: DEFAULT_PAGE_SIZE,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -60,6 +64,8 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private toastService: AppToastService,
     private adminService: AdminService,
+    private storageService:LocalStorageService,
+    private router:Router
   ) {
   }
 
@@ -69,13 +75,19 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.viewDataWithFeatures = [];
-    this._setTableFeatures();
-    this.getPageLoadData(this.setDataTableParam({
-      limit: DEFAULT_PAGE_SIZE,
-      pageSize: DEFAULT_PAGE_SIZE,
-      offset: 1,
-      count: 0
-    }));
+    if(this.storageService.getUserSession() && this.storageService.getUserSession()?.email){
+      this.logUserEmail = this.storageService.getUserSession()?.email!;
+      this._setTableFeatures();
+      this.getPageLoadData(this.setDataTableParam({
+        limit: DEFAULT_PAGE_SIZE,
+        pageSize: DEFAULT_PAGE_SIZE,
+        offset: 1,
+        count: 0
+      }));
+    }else{
+      this.storageService.clearSessionStorage();
+      this.router.navigate(['/']);
+    }
   }
 
 
@@ -163,7 +175,7 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.open(DeleteModalComponent, {centered: true, backdrop: false});
     this.modalRef.result.then(result => {
       if (result == 'remove-it') {
-        this.adminService.removeTripCategory(rowData.id, 'banneheka.cp@gmail.com').subscribe({
+        this.adminService.removeTripCategory(rowData.id, this.logUserEmail).subscribe({
           next: (res) => {
             if (res.status == SUCCESS_CODE) {
               this.searchItems();

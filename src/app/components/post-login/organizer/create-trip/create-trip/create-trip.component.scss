@@ -141,7 +141,8 @@ hr{
   }
 
   input,
-  textarea {
+  textarea,
+  select{
     width: 58%;
   }
   .invalid-feedback {
@@ -154,4 +155,7 @@ hr{
 .custom-button-green {
   background-color: var(--app-primary-green-500);
   border-color: var(--app-primary-green-400);
+}
+.ng-dropdown-panel {
+  background-color: white;
 }
