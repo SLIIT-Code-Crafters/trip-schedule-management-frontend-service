@@ -1,5 +1,23 @@
 # TraveltrekFrontEnd
 
+Step 01 - Download NodeJS using the link : https://nodejs.org/en/download
+
+Step 02 - Then run the installer while following the instructions provided in the next step for installation
+
+Step 03 - Then install the Angular using : npm install -g @angular/cli
+
+Step 04 - Then clone the project to local machine using: git clone https://github.com/SLIIT-Code-Crafters/trip-schedule-management-frontend-service.git
+
+Step 05 - After that open using an IDE like Visual Studio Code
+
+Step 06 - Then open a terminal and download the required node libraries using : npm install
+
+Step 07 - Build the project using : npm run build
+
+Step 08 - Next Start the project using: npm run start
+
+Step 09 - The URL for the running project will be displayed. Open that from a browser
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.9.
 
 ## Development server
