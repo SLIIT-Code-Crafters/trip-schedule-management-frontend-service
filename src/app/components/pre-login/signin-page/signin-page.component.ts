@@ -7,7 +7,7 @@ import {AppToastService} from 'src/app/services/toastr/toast.service';
 import {LocalStorageService} from "../../../services/storage/local-storage.service";
 import {CommonFunctionsService} from "../../../services/common/common-functions.service";
 import {AuthServiceService} from "../../../services/authentication/auth-service.service";
-import {NOT_ACTIVATED_CODE, SUCCESS_CODE} from "../../../utility/common/response-code";
+import {FORBIDDEN_ERROR_CODE, NOT_ACTIVATED_CODE, SUCCESS_CODE} from "../../../utility/common/response-code";
 import {User} from "../../../model/User";
 import {of, switchMap} from "rxjs";
 import {UserDetails} from "../../../model/UserDetails";
@@ -66,9 +66,17 @@ export class SigninPageComponent {
           }
         },
         error: (err) => {
-          if (err.error && err.error.message) {
-            this.commonFunctionsService.showAlertError(err.error.message);
-          }
+          if (err.error){
+            if (err.error.status == FORBIDDEN_ERROR_CODE) {
+              this.commonFunctionsService.showAlertWorn(err.error.message);
+              let user = new User();
+              user.email = this.loginForm.get('email')?.value;
+              this.storageService.setUserSession(user);
+              this.router.navigate(['/pre-log/activation']);
+            }else if (err.error.message) {
+                this.commonFunctionsService.showAlertError(err.error.message);
+              }
+            }
         }
       });
     }

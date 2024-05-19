@@ -5,7 +5,7 @@
 
     <nav class="navigation">
       <ul>
-        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/" *ngIf="checkHomeVisibility()">Home</a></li>
         <li><a routerLink="/auth/about">About</a></li>
         <li><a routerLink="/auth/contact">Contact</a></li>
 

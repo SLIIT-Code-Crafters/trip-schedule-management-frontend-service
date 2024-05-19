@@ -7,7 +7,6 @@ import {ADD_TASK, UPDATE_TASK, VIEW_TASK} from "../../../../../../utility/common
 import {SUCCESS_CODE} from "../../../../../../utility/common/response-code";
 import {OrganizerService} from "../../../../../../services/organizer/organizer.service";
 import {User} from "../../../../../../model/User";
-import {TripCreateRequest} from "../../../../../../interfaces/request/TripCreateRequest";
 import {Router} from "@angular/router";
 import {LocalStorageService} from "../../../../../../services/storage/local-storage.service";
 import {AppToastService} from "../../../../../../services/toastr/toast.service";
@@ -54,41 +53,41 @@ export class MediaModalComponent implements OnInit {
   private callGetImage(mediaDetails:TripMedia){
     this.organizerService.getMedia(mediaDetails).subscribe({
       next: (res) => {
-        this.mediaFileList .push(new File([res], mediaDetails.originalName));
+        this.mediaFileList.push(new File([res], mediaDetails.id));
       },
       error: (err) => {
       }
     })
   }
 
-  removeImage(id: number) {
-if(this.openTask == ADD_TASK){
-  this.mediaFileList.splice(id, 1)!;
-}else if(this.openTask == UPDATE_TASK) {
-  const user: User | null = this.storageService.getUserSession();
-  const optionRequest = {
-    userDto: {id: user?.userId},
-    tripId: this.tripId,
-    docId:this.mediaList[id].id
-  }
+  removeImage(id: number, med:File) {
+    if (this.openTask == ADD_TASK) {
+      this.mediaFileList.splice(id, 1)!;
+    } else if (this.openTask == UPDATE_TASK) {
+      const user: User | null = this.storageService.getUserSession();
+      const optionRequest = {
+        userDto: {id: user?.userId},
+        tripId: this.tripId,
+        docId: med.name
+      }
 
-  this.organizerService.removeMedia(optionRequest).subscribe({
-    next: (res) => {
-      if (res.status == SUCCESS_CODE) {
-        this.toastService.successMessage(res.message);
-        this.mediaFileList.splice(id, 1)!;
-        this.mediaList.splice(id, 1)!;
-      } else {
-        this.toastService.warningMessage(res.message);
-      }
-    },
-    error: (err) => {
-      if (err.error && err.error.message) {
-        this.toastService.errorMessage(err.error.message);
-      }
+      this.organizerService.removeMedia(optionRequest).subscribe({
+        next: (res) => {
+          if (res.status == SUCCESS_CODE) {debugger
+            this.toastService.successMessage(res.message);
+            this.mediaFileList.splice(id, 1)!;
+            this.mediaList.splice(this.mediaList.indexOf(this.mediaList.filter(v=>v.id==med.name)[0]), 1)!;
+          } else {
+            this.toastService.warningMessage(res.message);
+          }
+        },
+        error: (err) => {
+          if (err.error && err.error.message) {
+            this.toastService.errorMessage(err.error.message);
+          }
+        }
+      })
     }
-  })
-}
   }
 
   protected setMediaFileList(file: File) {
