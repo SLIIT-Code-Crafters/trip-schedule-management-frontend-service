@@ -11,6 +11,8 @@ import {FORBIDDEN_ERROR_CODE, NOT_ACTIVATED_CODE, SUCCESS_CODE} from "../../../u
 import {User} from "../../../model/User";
 import {of, switchMap} from "rxjs";
 import {UserDetails} from "../../../model/UserDetails";
+import { MatDialog } from '@angular/material/dialog'; // Import MatDialog
+import { ForgotPasswordComponent } from 'src/app/forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-signin-page',
@@ -31,6 +33,7 @@ export class SigninPageComponent {
     private toastService: AppToastService,
     private storageService: LocalStorageService,
     private commonFunctionsService: CommonFunctionsService,
+    private dialog: MatDialog // Inject MatDialog
   ) {
   }
 
@@ -121,5 +124,18 @@ export class SigninPageComponent {
 
   singUp() {
     this.router.navigate(['/pre-log/register'])
+  }
+
+  openForgotPasswordDialog(): void {
+    const dialogRef = this.dialog.open(ForgotPasswordComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('The dialog was closed with email:', result);
+        // Handle further actions such as calling a service to send OTP
+      }
+    });
   }
 }

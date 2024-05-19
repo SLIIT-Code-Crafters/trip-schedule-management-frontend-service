@@ -10,6 +10,11 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {Interceptor} from "./services/interceptors/Interceptor";
 import {NgxSpinnerModule} from "ngx-spinner";
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 const INTERCEPTORS = [{
   provide: HTTP_INTERCEPTORS,
   useClass: Interceptor,
@@ -21,7 +26,7 @@ const INTERCEPTORS = [{
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ForgotPasswordComponent],
   providers: [INTERCEPTORS],
   bootstrap: [AppComponent],
   imports: [
@@ -38,6 +43,10 @@ const INTERCEPTORS = [{
       timeOut: 2000
     }),
     NgxSpinnerModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
 })
 export class AppModule {
