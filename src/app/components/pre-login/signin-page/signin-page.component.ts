@@ -11,6 +11,8 @@ import {NOT_ACTIVATED_CODE, SUCCESS_CODE} from "../../../utility/common/response
 import {User} from "../../../model/User";
 import {of, switchMap} from "rxjs";
 import {UserDetails} from "../../../model/UserDetails";
+import { MatDialog } from '@angular/material/dialog'; // Import MatDialog
+import { ForgotPasswordComponent } from '/Users/charithbanneheka/Documents/SLIIT/MSc in Information Technology/Year 01/Semester 01/IT5030 - Software Engineering Practices/Trip Schedule and Management System/Workspace/trip-schedule-management-frontend-service/src/app/forgot-password/forgot-password.component'; // Import ForgotPasswordDialogComponent
 
 @Component({
   selector: 'app-signin-page',
@@ -31,6 +33,7 @@ export class SigninPageComponent {
     private toastService: AppToastService,
     private storageService: LocalStorageService,
     private commonFunctionsService: CommonFunctionsService,
+    private dialog: MatDialog // Inject MatDialog
   ) {
   }
 
@@ -113,5 +116,18 @@ export class SigninPageComponent {
 
   singUp() {
     this.router.navigate(['/pre-log/register'])
+  }
+
+  openForgotPasswordDialog(): void {
+    const dialogRef = this.dialog.open(ForgotPasswordComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('The dialog was closed with email:', result);
+        // Handle further actions such as calling a service to send OTP
+      }
+    });
   }
 }

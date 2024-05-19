@@ -15,6 +15,8 @@ import {
 import {TripOrganizeComponent} from "./components/post-login/organizer/trip-organize/trip-organize.component";
 import {CreateTripComponent} from "./components/post-login/organizer/create-trip/create-trip/create-trip.component";
 import {CreateTripResolver} from "./resolver/resolvers";
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'; // Import ForgotPasswordComponent
+
 
 const routes: Routes = [
   {
@@ -104,6 +106,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: ''
   },
+  { path: 'forgot-password', component: ForgotPasswordComponent }, // Add forgot-password route
 
 ];
 
