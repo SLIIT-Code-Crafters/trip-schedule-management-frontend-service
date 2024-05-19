@@ -11,7 +11,8 @@
 
         <li *ngIf="(user && user.activatedUser)"><a type="button" (click)="profile()">Profile</a></li>
 
-        <li *ngIf="(user && user.activatedUser)"><a type="button" (click)="tripOrganize()">Trip Organize</a></li>
+        <li *ngIf="(user && user.activatedUser && (user.role == USER_ROLE_ORGANIZER || user.role == USER_ROLE_ADMINISTRATOR))">
+          <a type="button" (click)="tripOrganize()">Organize Trip</a></li>
 
         <li class="nav-item dropdown" *ngIf="(user && user.activatedUser && user.role == USER_ROLE_ADMINISTRATOR)">
           <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"

@@ -16,4 +16,5 @@ export const USER_ROLE_ADMINISTRATOR = 'SA';
 
 export const AUTHSERVICE = 'https://fohtljhhuc.execute-api.ap-southeast-1.amazonaws.com/prod/';
 export const TRIPSERVICE = 'https://78s6fnyfl5.execute-api.ap-southeast-1.amazonaws.com/prod/';
+export const TRIPMNGSERVICE = 'http://travel-trek-trip-schedule-management.ap-southeast-1.elasticbeanstalk.com:8080/trip-management/';
 

@@ -37,7 +37,7 @@ export class ActivationComponent {
     if (user && user.email) {
       this.registeredEmail = user.email;
     } else {
-      
+      // this.router.navigate(['/']);
     }
   }
 
@@ -50,7 +50,7 @@ export class ActivationComponent {
         next: (res) => {
           if (res.status == SUCCESS_CODE) {
             this.commonFunctionsService.showAlertSuccess(res.message);
-            this.storageService.setToken(res.data.token);
+            this.storageService.clearSessionStorage();
             this.router.navigate(['/pre-log/login']);
           } else {
             this.commonFunctionsService.showAlertWorn(res.message);
@@ -62,7 +62,6 @@ export class ActivationComponent {
         }
       }
 
-      
     );
   }
 }

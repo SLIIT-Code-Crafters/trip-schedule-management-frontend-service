@@ -1,14 +1,6 @@
 import {CommonModule, DatePipe} from '@angular/common';
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder, FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidatorFn,
-  Validators
-} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {OptionModalComponent} from '../shared/option-modal/option-modal.component';
 import {DatatableComponent, NgxDatatableModule} from '@swimlane/ngx-datatable';
@@ -20,10 +12,15 @@ import {TripOption} from "../../../../../interfaces/create-trip/create-trip-opti
 import {AppToastService} from "../../../../../services/toastr/toast.service";
 import {ADD_TASK, DATE_FORMAT_1, UPDATE_TASK, VIEW_TASK} from "../../../../../utility/common/common-constant";
 import {CreateTripOption} from "../../../../../interfaces/create-trip/create-trip-option/CreateTripOption";
-import { MediaModalComponent } from '../shared/media-modal/media-modal.component';
+import {MediaModalComponent} from '../shared/media-modal/media-modal.component';
 import {CommonFunctionsService} from "../../../../../services/common/common-functions.service";
 import {LocalStorageService} from "../../../../../services/storage/local-storage.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {OrganizerService} from "../../../../../services/organizer/organizer.service";
+import {User} from "../../../../../model/User";
+import {TripCreateRequest} from "../../../../../interfaces/request/TripCreateRequest";
+import {SUCCESS_CODE} from "../../../../../utility/common/response-code";
+import {OrganizedTrip} from "../../../../../interfaces/create-trip/OrganizedTrip";
 
 @Component({
   selector: 'app-create-trip',
@@ -34,6 +31,7 @@ import {ActivatedRoute, Router} from "@angular/router";
     ReactiveFormsModule,
     NgxDatatableModule,
     HeaderComponent,
+    RouterLink,
   ],
   providers: [DatePipe],
   templateUrl: './create-trip.component.html',
@@ -45,7 +43,7 @@ export class CreateTripComponent implements OnInit, OnDestroy {
   @ViewChild('catTable', {static: true}) catTable: DatatableComponent | undefined;
   @ViewChild('actionOne', {static: true}) actionOne: TemplateRef<any> | undefined;
 
-  protected tripCategoryList:{id:string, description:string}[] = [];
+  protected tripCategoryList: { id: string, description: string }[] = [];
 
   protected columnsWithFeatures: any;
   private dataWithFeatures: TripOption[] = [];
@@ -55,11 +53,16 @@ export class CreateTripComponent implements OnInit, OnDestroy {
   protected minDateFromDate: string = '';
   protected minDateToDate: string = '';
 
+  protected mediaFileList: File[] = [];
+
   searchText: any;
 
   protected createTripForm: FormGroup;
 
-  protected openTask:string = ADD_TASK;
+  private selectedTripCatValue: { id: string }[] = [];
+
+  protected openTask: string = ADD_TASK;
+  protected organizedTripDataSet: OrganizedTrip | null = null;
 
   constructor(
     private modalService: NgbModal,
@@ -70,30 +73,49 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     private storageService: LocalStorageService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private organizerService: OrganizerService,
   ) {
     this.createTripForm = formBuilder.group({
-      id: [null, [Validators.required, commonService.noWhitespaceValidator]],
-      tripCategoryList: [null, [Validators.required]],
-      tripName:  [null, [Validators.required, commonService.noWhitespaceValidator]],
-      description:  [null, [Validators.required, commonService.noWhitespaceValidator]],
-      fromDate:  [null, [Validators.required]],
-      toDate:  [null, [Validators.required]],
-      reservationCloseDate:  [null, [Validators.required]],
-      finalCancelDate:  [null, [Validators.required]],
-      maxParticipantCount:  [null, [Validators.required]],
-      advertise_tripName:  [null, [Validators.required, commonService.noWhitespaceValidator]],
-      adertise_tripDetails:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      id: [null, [Validators.required]],
+      tripCategoryList: ['', [Validators.required]],
+      tripName: [null, [Validators.required, commonService.noWhitespaceValidator]],
+      description: [null, [Validators.required, commonService.noWhitespaceValidator]],
+      fromDate: [null, [Validators.required]],
+      toDate: [null, [Validators.required]],
+      reservationCloseDate: [null, [Validators.required]],
+      finalCancelDate: [null, [Validators.required]],
+      maxParticipantCount: [null, [Validators.required]],
+      advertise_tripName: [null, [Validators.required, commonService.noWhitespaceValidator]],
+      adertise_tripDetails: [null, [Validators.required, commonService.noWhitespaceValidator]],
       tripOptionList: [null],
-      documents:  [null, [Validators.required, commonService.noWhitespaceValidator]],
+      documents: [null],
       documentList: [null],
-      status:  [null]
-    }, {validators:this.toDateGreaterThanFromDateValidator});
+      status: [null]
+    }, {validators: this.toDateGreaterThanFromDateValidator});
+
+    try {
+      const navData = this.router.getCurrentNavigation()?.extras.state as { task: string, data: OrganizedTrip };
+      if (navData && navData.task) {
+        this.openTask = navData.task;
+        this.organizedTripDataSet = navData.data;
+      } else {
+        this.router.navigate(['/post-log/organize'])
+      }
+    } catch (e) {
+      this.router.navigate(['/post-log/organize'])
+    }
   }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe((data)=>{
+    this.activatedRoute.data.subscribe((data) => {
       this.tripCategoryList = data['categoryList'];
     });
+    this.getFormTripCategoryList?.valueChanges.subscribe(val => {
+      this.selectedTripCatValue = [];
+      if (val) {
+        this.selectedTripCatValue.push({id: val});
+      }
+    })
     this.dataWithFeatures = [];
     this.viewDataWithFeatures = [];
     this.todayDate = this.datePipe.transform(new Date(), DATE_FORMAT_1)!.toString();
@@ -103,19 +125,32 @@ export class CreateTripComponent implements OnInit, OnDestroy {
       case ADD_TASK:
         this.getFormId?.clearValidators();
         break;
+      case UPDATE_TASK:
+      case VIEW_TASK:
+        this.createTripForm.patchValue({
+          id: this.organizedTripDataSet?.id,
+          tripCategoryList: this.organizedTripDataSet?.tripCategoryList.map(v => v.id)[0],
+          tripName: this.organizedTripDataSet?.tripName,
+          description: this.organizedTripDataSet?.description,
+          fromDate: this.datePipe.transform(this.organizedTripDataSet?.fromDate, DATE_FORMAT_1)!,
+          toDate: this.datePipe.transform(this.organizedTripDataSet?.toDate, DATE_FORMAT_1)!,
+          reservationCloseDate: this.datePipe.transform(this.organizedTripDataSet?.reservationCloseDate, DATE_FORMAT_1)!,
+          finalCancelDate: this.datePipe.transform(this.organizedTripDataSet?.finalCancelDate, DATE_FORMAT_1)!,
+          maxParticipantCount: this.organizedTripDataSet?.maxParticipantCount,
+          advertise_tripName: this.organizedTripDataSet?.advertise_tripName,
+          adertise_tripDetails: this.organizedTripDataSet?.adertise_tripDetails,
+          tripOptionList: this.organizedTripDataSet?.tripOptionList,
+          documentList: this.organizedTripDataSet?.documentList,
+        });
+        this.dataWithFeatures = this.organizedTripDataSet?.tripOptionList!;
+        this.refreshDataSet();
+        if (this.openTask == VIEW_TASK) {
+          this.createTripForm.disable();
+        }
+        break;
     }
-
     this._setTableFeatures();
     this.refreshDataSet();
-  }
-
-  protected getChangeTripCategory(catVal: string){
-    if(catVal){
-      this.getFormTripCategoryList?.setValue([catVal]);
-    }else{
-      this.getFormTripCategoryList?.setValue([]);
-    }
-    console.log(this.getFormTripCategoryList?.value)
   }
 
   private _setTableFeatures() {
@@ -140,6 +175,43 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     }
   }
 
+  private callUpdateOption(option: TripOption, updateType:string) {
+    const user: User | null = this.storageService.getUserSession();
+    const newTripOptionSelection = option.tripOptionSelection.map((subVal: any) => {
+      return {name: subVal.name, description: subVal.description, cost: subVal.cost};
+    })
+    const newOption = {name: option.name, tripOptionSelection: newTripOptionSelection}
+
+    const optionRequest = {
+      userDto: {id: user?.userId},
+      tripRequest: {
+        id: this.organizedTripDataSet?.id,
+        tripOptionList: newOption
+      }
+    }
+    this.organizerService.updateOrganizedTripOptions(optionRequest).subscribe({
+      next: (res) => {
+        if (res.status == SUCCESS_CODE) {
+          this.toastService.successMessage(res.message);
+          if(updateType == 'new'){
+            this.dataWithFeatures.push(option);
+          }else if(updateType == 'update'){
+            this.dataWithFeatures = this._updateDataList(this.dataWithFeatures, option);
+          }
+          this.refreshDataSet();
+          this.modalRef?.close();
+        } else {
+          this.toastService.warningMessage(res.message);
+        }
+      },
+      error: (err) => {
+        if (err.error && err.error.message) {
+          this.toastService.errorMessage(err.error.message);
+        }
+      }
+    })
+  }
+
   addOption() {
     if (this.modalRef) {
       this.modalRef.close();
@@ -149,18 +221,37 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     this.modalRef.componentInstance.passEntry.subscribe((option: TripOption) => {
       if (option) {
         option.id = Math.random().toString(36).substr(2, 8);
-        this.dataWithFeatures.push(option);
-        this.refreshDataSet();
-        this.toastService.successMessage('Options was added successfully');
-        this.modalRef?.close();
+        if (this.openTask == UPDATE_TASK) {
+          this.callUpdateOption(option, 'new');
+        } else if (this.openTask == ADD_TASK) {
+          this.dataWithFeatures.push(option);
+          this.modalRef?.close();
+          this.refreshDataSet();
+        }
       }
     });
   }
+
   addMedia() {
     if (this.modalRef) {
       this.modalRef.close();
     }
     this.modalRef = this.modalService.open(MediaModalComponent, {centered: true, backdrop: false, size: 'lg'});
+    this.modalRef.componentInstance.openTask = this.openTask;
+    this.modalRef.componentInstance.tripId = this.organizedTripDataSet?.id;
+    if (this.openTask == UPDATE_TASK || this.openTask == VIEW_TASK) {
+      this.modalRef.componentInstance.mediaList = this.getFormDocumentList?.value;
+    }
+    this.modalRef.result.then(result => {
+      if (result && result.status == 'save-media') {
+        if(this.openTask == ADD_TASK){
+          this.mediaFileList = result.data;
+        }else if(this.openTask == UPDATE_TASK){
+          this.mediaFileList = result.data; // todo add list
+        }
+      }
+    }).catch(err => {
+    });
   }
 
   viewOption(row: CreateTripOption) {
@@ -181,10 +272,13 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     this.modalRef.componentInstance.tripOptionSet = JSON.parse(JSON.stringify(this.dataWithFeatures.filter(v => v.id == row.id)[0]));
     this.modalRef.componentInstance.passEntry.subscribe((option: TripOption) => {
       if (option) {
-        this.dataWithFeatures = this._updateDataList(this.dataWithFeatures, option);
-        this.refreshDataSet();
-        this.toastService.successMessage('Options was Updated successfully');
-        this.modalRef?.close();
+        if (this.openTask == UPDATE_TASK) {
+          this.callUpdateOption(option, 'update');
+        } else if (this.openTask == ADD_TASK) {
+          this.dataWithFeatures = this._updateDataList(this.dataWithFeatures, option);
+          this.modalRef?.close();
+          this.refreshDataSet();
+        }
       }
     });
   }
@@ -215,7 +309,7 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     this.getFormTripOptionList?.setValue(this.dataWithFeatures)
     this.viewDataWithFeatures = this.dataWithFeatures.map(val => {
       let tripOption: CreateTripOption = {
-        id: val.id,
+        id: val.id!,
         displayName: val.name,
         optionCount: val.tripOptionSelection.length.toString()
       }
@@ -223,81 +317,157 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     });
   }
 
-  protected clickPublish(){
-    console.log(this.createTripForm)
-  }
+  protected clickPublish() {
+    if (this.createTripForm.valid) {
+      const requestBody = JSON.parse(JSON.stringify((this.createTripForm.getRawValue())));
+      requestBody.tripCategoryList = this.selectedTripCatValue;
+      requestBody.fromDate = this.datePipe.transform(requestBody.fromDate, 'yyyy-MM-ddTHH:mm:ss.SSS')!;
+      requestBody.toDate = this.datePipe.transform(requestBody.toDate, 'yyyy-MM-ddTHH:mm:ss.SSS')!;
+      requestBody.reservationCloseDate = this.datePipe.transform(requestBody.reservationCloseDate, 'yyyy-MM-ddTHH:mm:ss.SSS')!;
+      requestBody.finalCancelDate = this.datePipe.transform(requestBody.finalCancelDate, 'yyyy-MM-ddTHH:mm:ss.SSS')!;
 
-  private toDateGreaterThanFromDateValidator(formGroup:FormGroup) {
-      const fromDate = formGroup.get('fromDate')?.value;
-      const toDate = formGroup.get('toDate')?.value;
-      if (fromDate && toDate && toDate < fromDate) {
-        return formGroup.get('toDate')?.setErrors({'toDateLessThanFromDate': true});
-      }else if(formGroup.get('toDate')?.hasError('toDateLessThanFromDate')){
-          return formGroup.get('toDate')?.setErrors(null);
+      requestBody.tripOptionList = requestBody.tripOptionList.map((val: any) => {
+        val.tripOptionSelection = val.tripOptionSelection.map((subVal: any) => {
+          return {name: subVal.name, description: subVal.description, cost: subVal.cost};
+        })
+        return {name: val.name, tripOptionSelection: val.tripOptionSelection};
+      })
+
+      const user: User | null = this.storageService.getUserSession();
+      if (user) {
+        const request: TripCreateRequest = {
+          userDto: {id: user?.userId, userName: user.userName},
+          tripRequest: requestBody
+        };
+        if (this.openTask == ADD_TASK) {
+          const formData = new FormData();
+          this.mediaFileList.forEach((file) => {
+            formData.append('documents', file);
+          });
+          formData.append('TSMSRequest ', new Blob([JSON.stringify(request)], {
+            type: 'application/json'
+          }));
+          this.organizerService.createOrganizedTrip(formData).subscribe({
+            next: (res) => {
+              if (res.status == SUCCESS_CODE) {
+                this.toastService.successMessage(res.message);
+                this.router.navigate(['/post-log/organize'])
+              } else {
+                this.toastService.warningMessage(res.message);
+              }
+            },
+            error: (err) => {
+              if (err.error && err.error.message) {
+                this.toastService.errorMessage(err.error.message);
+              }
+            }
+          })
+        } else if (this.openTask == UPDATE_TASK) {
+          request.tripRequest.id = this.organizedTripDataSet?.id!;
+          request.tripRequest.tripOptionList = [];
+          const newUpdateRequest = {
+            userDto: {id: request.userDto.id},
+            tripRequest: request.tripRequest
+          }
+
+          this.organizerService.updateOrganizedTrip(newUpdateRequest).subscribe({
+            next: (res) => {
+              if (res.status == SUCCESS_CODE) {
+                this.toastService.successMessage(res.message);
+                this.router.navigate(['/post-log/organize'])
+              } else {
+                this.toastService.warningMessage(res.message);
+              }
+            },
+            error: (err) => {
+              if (err.error && err.error.message) {
+                this.toastService.errorMessage(err.error.message);
+              }
+            }
+          })
+        }
+      } else {
+        this.storageService.clearSessionStorage();
+        this.router.navigate(['/'])
       }
+    }
   }
 
-  get getFormId(){
+  private toDateGreaterThanFromDateValidator(formGroup: FormGroup) {
+    const fromDate = formGroup.get('fromDate')?.value;
+    const toDate = formGroup.get('toDate')?.value;
+    if (fromDate && toDate && toDate < fromDate) {
+      return formGroup.get('toDate')?.setErrors({'toDateLessThanFromDate': true});
+    } else if (formGroup.get('toDate')?.hasError('toDateLessThanFromDate')) {
+      return formGroup.get('toDate')?.setErrors(null);
+    }
+  }
+
+  get getFormId() {
     return this.createTripForm.get('id');
   }
 
-  get getFormTripCategoryList(){
+  get getFormTripCategoryList() {
     return this.createTripForm.get('tripCategoryList');
   }
 
-  get getFormTripName(){
+  get getFormTripName() {
     return this.createTripForm.get('tripName');
   }
 
-  get getFormDescription(){
+  get getFormDescription() {
     return this.createTripForm.get('description');
   }
 
-  get getFormFromDate(){
+  get getFormFromDate() {
     return this.createTripForm.get('fromDate');
   }
 
-  get getFormToDate(){
+  get getFormToDate() {
     return this.createTripForm.get('toDate');
   }
 
-  get getForm(){
+  get getForm() {
     return this.createTripForm.get('');
   }
 
-  get getFormReservationCloseDate(){
+  get getFormReservationCloseDate() {
     return this.createTripForm.get('reservationCloseDate');
   }
 
-  get getFormFinalCancelDate(){
+  get getFormFinalCancelDate() {
     return this.createTripForm.get('finalCancelDate');
   }
 
-  get getFormMaxParticipantCount(){
+  get getFormMaxParticipantCount() {
     return this.createTripForm.get('maxParticipantCount');
   }
 
-  get getFormAdvertise_tripName(){
+  get getFormAdvertise_tripName() {
     return this.createTripForm.get('advertise_tripName');
   }
 
-  get getFormAdertise_tripDetails(){
+  get getFormAdertise_tripDetails() {
     return this.createTripForm.get('adertise_tripDetails');
   }
 
-  get getFormTripOptionList(){
+  get getFormTripOptionList() {
     return this.createTripForm.get('tripOptionList');
   }
 
-  get getFormDocuments(){
+  get getFormDocuments() {
     return this.createTripForm.get('documents');
   }
 
-  get getFormDocumentList(){
+  get getFormDocumentList() {
     return this.createTripForm.get('documentList');
   }
 
-  get getFormStatus(){
+  get getFormStatus() {
     return this.createTripForm.get('status');
   }
+
+  protected readonly VIEW_TASK = VIEW_TASK;
+  protected readonly UPDATE_TASK = UPDATE_TASK;
+  protected readonly ADD_TASK = ADD_TASK;
 }

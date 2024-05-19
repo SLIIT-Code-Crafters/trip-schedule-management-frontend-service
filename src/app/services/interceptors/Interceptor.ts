@@ -57,6 +57,7 @@ export class Interceptor implements HttpInterceptor {
     if (!request.headers.get('Authorization') &&
       !(request.url.includes('/auth/authenticate') ||
         request.url.includes('/auth/register') ||
+        request.url.includes('travel-trek-media.s3') ||
         request.url.includes('/users/get-by-email') ||
         request.url.includes('/auth/activate'))) {
       return request.clone({
