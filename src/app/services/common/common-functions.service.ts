@@ -28,28 +28,28 @@ export class CommonFunctionsService {
 
   showAlertError(message: string) {
     Swal.fire({
-      // title: 'Error',
+      
       html: message,
       icon: 'error',
-      // confirmButtonText: 'Ok'
+      
     })
   }
 
   showAlertSuccess(message: string) {
     Swal.fire({
-      // title: 'Success',
+     
       html: message,
       icon: 'success',
-      // confirmButtonText: 'Ok'
+      
     })
   }
 
   showAlertWorn(message: string) {
     Swal.fire({
-      // title: 'Oops!',
+    
       html: message,
       icon: 'warning',
-      // confirmButtonText: 'Ok'
+      
     })
   }
 
