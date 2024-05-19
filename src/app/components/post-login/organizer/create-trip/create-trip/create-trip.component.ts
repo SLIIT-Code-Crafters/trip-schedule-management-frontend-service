@@ -241,13 +241,13 @@ export class CreateTripComponent implements OnInit, OnDestroy {
     this.modalRef.componentInstance.tripId = this.organizedTripDataSet?.id;
     if (this.openTask == UPDATE_TASK || this.openTask == VIEW_TASK) {
       this.modalRef.componentInstance.mediaList = this.getFormDocumentList?.value;
+    }else if(this.openTask == ADD_TASK) {
+      this.modalRef.componentInstance.mediaFileList = [...this.mediaFileList];
     }
     this.modalRef.result.then(result => {
       if (result && result.status == 'save-media') {
-        if(this.openTask == ADD_TASK){
+        if (this.openTask == ADD_TASK || this.openTask == UPDATE_TASK) {
           this.mediaFileList = result.data;
-        }else if(this.openTask == UPDATE_TASK){
-          this.mediaFileList = result.data; // todo add list
         }
       }
     }).catch(err => {

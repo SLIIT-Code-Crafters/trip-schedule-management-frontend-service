@@ -46,7 +46,7 @@ export class OrganizerService {
   }
 
   getAllOrganizedTrip(paramMap: Map<string, string>): Observable<CommonResponse<TripOrganizeResponseBody>> {
-    const url = `${TRIPSERVICE}api/v1/private/trip/get-trip-details-by-id?requestId=getTripCat`;
+    const url = `${TRIPMNGSERVICE}api/v1/private/trip/get-trip-details-by-id?requestId=getTripCat`;
     let httpParams = this.commonService.getDataTableHttpParam(paramMap);
     return this.http.get<CommonResponse<TripOrganizeResponseBody>>(url, {params: httpParams});
   }

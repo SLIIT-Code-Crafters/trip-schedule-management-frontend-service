@@ -8,7 +8,13 @@ import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 import {DatatableComponent} from "@swimlane/ngx-datatable/lib/components/datatable.component";
 import {SiteContent} from "../../../../../interfaces/site-content/SiteContent";
 import {AppToastService} from "../../../../../services/toastr/toast.service";
-import {ADD_TASK, UPDATE_TASK, VIEW_TASK} from "../../../../../utility/common/common-constant";
+import {
+    ADD_TASK,
+    STATUS_ACTIVE,
+    STATUS_DELETED,
+    UPDATE_TASK,
+    VIEW_TASK
+} from "../../../../../utility/common/common-constant";
 
 @Component({
   selector: 'app-sys-admin-site-category',
@@ -244,4 +250,7 @@ export class SysAdminSiteContentComponent implements OnInit, OnDestroy {
       return a.fromDate.localeCompare(b.fromDate);
     });
   }
+
+    protected readonly STATUS_ACTIVE = STATUS_ACTIVE;
+    protected readonly STATUS_DELETED = STATUS_DELETED;
 }

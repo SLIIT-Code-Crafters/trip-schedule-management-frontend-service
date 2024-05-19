@@ -49,7 +49,7 @@ export class SysAdminTripCategoryComponent implements OnInit, OnDestroy {
   protected tableRowCount: number = DEFAULT_PAGE_SIZE;
 
   private searchTextParams: string = '';
-  private searchStatusParams: string = STATUS_ACTIVE;
+  protected searchStatusParams: string = STATUS_ACTIVE;
 
   private logUserEmail:string = '';
 

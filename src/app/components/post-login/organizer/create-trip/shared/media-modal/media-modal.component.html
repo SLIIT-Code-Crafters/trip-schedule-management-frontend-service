@@ -1,17 +1,17 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Add Media</h5>
+    <h5 class="modal-title" id="exampleModalLabel">{{(openTask == UPDATE_TASK)?'Update':(openTask == VIEW_TASK)?'View':'Add'}} Media</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cross-click')"></button>
   </div>
   <div class="modal-body">
     <div class="wrapper">
       <div class="box" *ngFor="let med of mediaFileList;let numbIndex = index">
-        <button *ngIf="openTask != VIEW_TASK" type="button" class="btn-close uploader-close" aria-label="Close" (click)="removeImage(numbIndex)"></button>
+        <button *ngIf="openTask != VIEW_TASK" type="button" class="btn-close uploader-close" aria-label="Close" (click)="removeImage(numbIndex, med)"></button>
         <app-image-uploader [previewImageFile]="med"></app-image-uploader>
       </div>
 
       <div class="box" *ngIf="openTask != VIEW_TASK">
-        <!--        <button type="button" class="btn-close uploader-close"  aria-label="Close"></button>-->
+       
         <app-image-uploader (passEntryImage)="setMediaFileList($event)"></app-image-uploader>
       </div>
 
