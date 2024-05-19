@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {VIEW_TASK} from "../../../../../../utility/common/common-constant";
 import {SiteContent} from "../../../../../../interfaces/site-content/SiteContent";
@@ -12,6 +12,8 @@ import {CommonFunctionsService} from "../../../../../../services/common/common-f
   styleUrls: ['./image-uploader.component.scss']
 })
 export class ImageUploaderComponent implements OnInit{
+
+  @ViewChild('fileInput') fileInputRef!: ElementRef;
 
   @Input() openedTask:string = '';
   @Input() previewImageFile: File|null = null;
@@ -50,6 +52,7 @@ export class ImageUploaderComponent implements OnInit{
           const imageBlob = this.commonFunctionsService.dataURItoBlob(val);
           let imageFile: File = new File([imageBlob], file.name, {type: file.type});
           this.passEntryImage.emit(imageFile);
+          this.removeFile();
         }
       }).catch(reason => {
         console.log(reason)
@@ -69,6 +72,13 @@ export class ImageUploaderComponent implements OnInit{
       }
       reader.onerror = error => reject(error);
     });
+  }
+
+
+  removeFile(): void {
+    if (this.fileInputRef && this.fileInputRef.nativeElement) {
+      this.fileInputRef.nativeElement.value = '';
+    }
   }
 
   protected readonly VIEW_TASK = VIEW_TASK;

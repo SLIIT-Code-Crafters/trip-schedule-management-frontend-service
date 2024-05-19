@@ -58,4 +58,12 @@ export class HeaderComponent implements OnInit {
 
   protected readonly USER_ROLE_ADMINISTRATOR = USER_ROLE_ADMINISTRATOR;
   protected readonly USER_ROLE_ORGANIZER = USER_ROLE_ORGANIZER;
+
+  checkHomeVisibility():boolean {
+    const user = this.storageService.getUserSession();
+    if(this.router.url == '/' || !user || !user.userName){
+      return false;
+    }
+    return true;
+  }
 }

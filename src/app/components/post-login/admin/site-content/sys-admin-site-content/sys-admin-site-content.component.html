@@ -67,9 +67,9 @@
             <div class="actions">
               <a><i class="bi bi-eye" aria-hidden="true" title="View"
                     (click)="viewCategory(row)"></i></a>
-              <a><i class="bi bi-pencil-square  text-success" aria-hidden="true" title="Edit"
+              <a *ngIf="searchStatus != STATUS_DELETED"><i class="bi bi-pencil-square  text-success" aria-hidden="true" title="Edit"
                     (click)="updateCategory(row)"></i></a>
-              <a><i class="bi bi-trash3 text-danger" aria-hidden="true" title="Delete"
+              <a *ngIf="searchStatus != STATUS_DELETED"><i class="bi bi-trash3 text-danger" aria-hidden="true" title="Delete"
                     (click)="removeCategory(row)"></i></a>
             </div>
           </ng-template>

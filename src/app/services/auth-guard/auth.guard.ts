@@ -30,13 +30,7 @@ export const CanActivateRegisterActive: CanActivateFn = (
 ) => {
   const storageService = inject(LocalStorageService);
   return !!(storageService && storageService.getUserSession() && !storageService.getUserSession()?.activatedUser);
-  //
-  // return authService.checkLogin().pipe(
-  //   map(() => true),
-  //   catchError(() => {
-  //     return router.createUrlTree(['route-to']);
-  //   })
-  // );
+ 
 };
 
 
@@ -45,7 +39,6 @@ export const CanActivatePreLogin: CanActivateFn = (
   state: RouterStateSnapshot
 ) => {
   const storageService = inject(LocalStorageService);
-  console.log(state.url)
   if(state.url.includes('activation')){
     return !!(storageService.getUserSession() && storageService.getUserSession()?.email && !storageService.getUserSession()?.activatedUser);
   }else{

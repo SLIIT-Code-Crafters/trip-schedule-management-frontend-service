@@ -24,7 +24,6 @@ import {
 import {SUCCESS_CODE} from "../../../../utility/common/response-code";
 import {LocalStorageService} from "../../../../services/storage/local-storage.service";
 import {User} from "../../../../model/User";
-import {TripCreateRequest} from "../../../../interfaces/request/TripCreateRequest";
 
 @Component({
   selector: 'app-trip-organize',
@@ -53,7 +52,7 @@ export class TripOrganizeComponent implements OnInit, OnDestroy {
   protected readonly STATUS_ACTIVE = STATUS_ACTIVE;
   private modalRef: NgbModalRef | undefined;
   private searchTextParams: string = '';
-  private searchStatusParams: string = STATUS_ACTIVE;
+  protected searchStatusParams: string = STATUS_ACTIVE;
   private logUserEmail: string = '';
   private logUserId: string = '';
 
