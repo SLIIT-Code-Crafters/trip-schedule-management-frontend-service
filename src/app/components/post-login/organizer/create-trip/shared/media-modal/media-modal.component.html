@@ -1,28 +1,29 @@
 <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Add Media</h5>
-      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cross-click')"></button>
-    </div>
-    <div class="modal-body">
-        <div class="wrapper">
-          <div class="box" *ngFor="let item of mediaList">
-            <button type="button" class="btn-close" aria-label="Close" (click)="removeImage(item.id)"></button>
-            <app-image-uploader [openedTask]="openTask" [previewImage]="item.uniqueName"></app-image-uploader>
-          </div>
-
-          <div class="box">
-            <button type="button" class="btn-close" aria-label="Close" (click)="removeImage('')"></button>
-            <app-image-uploader></app-image-uploader>
-          </div>
-
-    </div>
-    <div class="modal-footer cuz-btn">
-      <button type="button" class="btn btn-primary cuz-blue-btn"
-              >Save </button>
-      <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')">Close</button>
-    </div>
-    <ng-template #empty_footer>
-      <div class="modal-footer" ></div>
-    </ng-template>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Add Media</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cross-click')"></button>
   </div>
-  
+  <div class="modal-body">
+    <div class="wrapper">
+      <div class="box" *ngFor="let med of mediaFileList;let numbIndex = index">
+        <button *ngIf="openTask != VIEW_TASK" type="button" class="btn-close uploader-close" aria-label="Close" (click)="removeImage(numbIndex)"></button>
+        <app-image-uploader [previewImageFile]="med"></app-image-uploader>
+      </div>
+
+      <div class="box" *ngIf="openTask != VIEW_TASK">
+        <!--        <button type="button" class="btn-close uploader-close"  aria-label="Close"></button>-->
+        <app-image-uploader (passEntryImage)="setMediaFileList($event)"></app-image-uploader>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer cuz-btn">
+    <button *ngIf="openTask != VIEW_TASK" type="button" class="btn btn-primary cuz-blue-btn" (click)="saveMedia()"
+    >{{(openTask == UPDATE_TASK)?'Update':'Save'}}
+    </button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+  <ng-template #empty_footer>
+    <div class="modal-footer"></div>
+  </ng-template>
+</div>

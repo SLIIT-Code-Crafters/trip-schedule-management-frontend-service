@@ -118,7 +118,7 @@ export class ContentModalCrudComponent implements OnInit {
     //check all data validate and this modal is not view
     if (this.modalForm.valid && this.openedTask && this.openedTask != VIEW_TASK) {
       if (this.openedTask == ADD_TASK) {
-       
+        // this.getFormFormDate?.setValue(this.datePipe.transform(new Date(), DATE_FORMAT_1));
       }
       if (this.openedTask == UPDATE_TASK && !this._isChangedData()) {
         this.toastService.warningMessage('There is no data changed');

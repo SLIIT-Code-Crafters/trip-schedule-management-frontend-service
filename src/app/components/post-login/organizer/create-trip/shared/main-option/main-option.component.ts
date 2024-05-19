@@ -4,7 +4,7 @@ import {SingleOptionComponent} from '../single-option/single-option.component';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AppToastService} from "../../../../../../services/toastr/toast.service";
 import {TripOption} from "../../../../../../interfaces/create-trip/create-trip-option/TripOption";
-import {ADD_TASK, UPDATE_TASK} from "../../../../../../utility/common/common-constant";
+import {ADD_TASK, UPDATE_TASK, VIEW_TASK} from "../../../../../../utility/common/common-constant";
 
 @Component({
   selector: 'app-main-option',
@@ -22,6 +22,7 @@ export class MainOptionComponent implements OnInit {
   @Input() supOptionSet!: TripOption;
   @Input() openedTask: string = '';
   @Output() removeOption: EventEmitter<string> = new EventEmitter();
+
   superFrom: FormGroup;
 
   constructor(
@@ -37,6 +38,9 @@ export class MainOptionComponent implements OnInit {
 
   ngOnInit(): void {
     this._setForm();
+    if(this.openedTask == VIEW_TASK){
+      this.superFrom.disable();
+    }
   }
 
   private _setForm() {

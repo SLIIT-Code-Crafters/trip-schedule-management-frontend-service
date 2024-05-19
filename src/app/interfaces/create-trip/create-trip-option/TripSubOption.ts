@@ -1,5 +1,5 @@
 export interface TripSubOption {
-  id: string;
+  id: string|null;
   name: string;
   description: string;
   cost: string;

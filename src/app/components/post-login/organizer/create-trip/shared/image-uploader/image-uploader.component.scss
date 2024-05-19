@@ -15,6 +15,9 @@
 .modal-header{
   background: var(--primary-blue-100);
 }
+// .modal-footer{
+//   padding: 12px 0 0 0;
+// }
 
 hr{
   margin: 20px 0;
@@ -82,6 +85,18 @@ h1 {
   text-align: center;
 }
 
+input {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+}
+
 .upload-options {
   position: relative;
   height: 40px;
@@ -93,15 +108,15 @@ h1 {
   &:hover {
     background-color: var(--primary-blue-400);
   }
-  & input {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
-  & label {
+  // input {
+  //   width: 100%;
+  //   height: 100%;
+  //   opacity: 0;
+  //   overflow: hidden;
+  //   position: absolute;
+  //   z-index: -1;
+  // }
+  label {
     display: flex;
     align-items: center;
     width: 100%;
@@ -111,17 +126,17 @@ h1 {
     white-space: nowrap;
     cursor: pointer;
     overflow: hidden;
-    &::after {
-      content: '+';
-      font-family: 'Material Icons';
-      position: absolute;
-      font-size: 18px;
-      font-weight: 800;
-      color: rgba(230, 230, 230, 1);
-      top: calc(50% - 20px);
-      left: calc(50% - 1.25rem);
-      z-index: 0;
-    }
+    // &::after {
+    //   content: '+';
+    //   font-family: 'Material Icons';
+    //   position: absolute;
+    //   font-size: 18px;
+    //   font-weight: 800;
+    //   color: rgba(230, 230, 230, 1);
+    //   top: calc(50% - 20px);
+    //   left: calc(50% - 1.25rem);
+    //   z-index: 0;
+    // }
     & span {
       display: inline-block;
       width: 50%;
@@ -139,8 +154,11 @@ h1 {
 }
 
 
+.js--image-preview-img {
+  background-image: url('https://travel-trek-angular-client-assets.s3.ap-southeast-1.amazonaws.com/drag_image_hear.png');
+}
 .js--image-preview {
-  height: 225px;
+  height: 256px;
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -148,16 +166,22 @@ h1 {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  &::after {
-    content: "";
-    font-family: 'Material Icons';
-    position: relative;
-    font-size: 4.5em;
-    color: rgba(230, 230, 230, 1);
-    top: calc(50% - 3rem);
-    left: calc(50% - 2.25rem);
-    z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    max-height: 236px;
   }
+  // &::after {
+  //   content: "";
+  //   font-family: 'Material Icons';
+  //   position: relative;
+  //   font-size: 4.5em;
+  //   color: rgba(230, 230, 230, 1);
+  //   top: calc(50% - 3rem);
+  //   left: calc(50% - 2.25rem);
+  //   z-index: 0;
+  // }
   &.js--no-default::after {
     display: none;
   }

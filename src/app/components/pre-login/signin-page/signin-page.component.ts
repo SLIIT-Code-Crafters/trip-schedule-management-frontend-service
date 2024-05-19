@@ -92,6 +92,9 @@ export class SigninPageComponent {
           user.email = this.loginForm.get('email')?.value;
           user.activatedUser = true;
           user.userId = (userData.id) ? userData.id : '';
+          user.userName = (userData.userName) ? userData.userName : '';
+          user.firstName = (userData.firstName) ? userData.firstName : '';
+          user.lastName = (userData.lastName) ? userData.lastName : '';
           user.role = (userData.role) ? userData.role : '';
           user.activatedUser = true;
           this.storageService.setUserSession(user);

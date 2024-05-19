@@ -60,4 +60,15 @@ export class CommonFunctionsService {
   decrypt(textToDecrypt: string) {
     return CryptoJS.AES.decrypt(textToDecrypt, this.SECRET_KEY_ENCRYPT.trim()).toString(CryptoJS.enc.Utf8);
   }
+
+  dataURItoBlob(dataURI: string) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([int8Array], {type: 'image/jpeg'});
+  }
+
 }

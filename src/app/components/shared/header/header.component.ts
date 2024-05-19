@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from "@angular/router";
 import {LocalStorageService} from "../../../services/storage/local-storage.service";
 import {User} from "../../../model/User";
-import {USER_ROLE_ADMINISTRATOR} from "../../../utility/common/common-constant";
+import {USER_ROLE_ADMINISTRATOR, USER_ROLE_ORGANIZER} from "../../../utility/common/common-constant";
 
 @Component({
   selector: 'app-header',
@@ -57,4 +57,5 @@ export class HeaderComponent implements OnInit {
   }
 
   protected readonly USER_ROLE_ADMINISTRATOR = USER_ROLE_ADMINISTRATOR;
+  protected readonly USER_ROLE_ORGANIZER = USER_ROLE_ORGANIZER;
 }

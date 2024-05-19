@@ -1,9 +1,9 @@
-<div class="js--image-preview">
-  <img [src]="previewImage" alt="">
+<div class="js--image-preview" [ngClass]="(!imge)?'js--image-preview-img':''">
+  <img [src]="imge" alt="">
 </div>
+<input type="file" class="image-upload" accept="image/*" [disabled]="(openedTask == VIEW_TASK || imge)"
+       (change)="fileChangeFileEvent($event)">
 <div class="upload-options">
   <label>
-    <input type="file" class="image-upload" accept="image/*" [disabled]="(openedTask == VIEW_TASK)"
-           (change)="fileChangeFileEvent($event)">
   </label>
 </div>

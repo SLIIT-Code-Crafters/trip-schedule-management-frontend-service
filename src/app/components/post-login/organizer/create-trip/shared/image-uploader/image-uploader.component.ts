@@ -1,6 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {VIEW_TASK} from "../../../../../../utility/common/common-constant";
+import {SiteContent} from "../../../../../../interfaces/site-content/SiteContent";
+import {CommonFunctionsService} from "../../../../../../services/common/common-functions.service";
 
 @Component({
   selector: 'app-image-uploader',
@@ -9,19 +11,27 @@ import {VIEW_TASK} from "../../../../../../utility/common/common-constant";
   templateUrl: './image-uploader.component.html',
   styleUrls: ['./image-uploader.component.scss']
 })
-export class ImageUploaderComponent {
+export class ImageUploaderComponent implements OnInit{
 
   @Input() openedTask:string = '';
+  @Input() previewImageFile: File|null = null;
 
-  @Input() previewImage: unknown = '';
+  @Input() showOnly: boolean = false;
 
-  protected fileChangeFileEvent(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.fileToBase64(file).then(value => {
-        console.log(value)
+  @Output() passEntryImage: EventEmitter<any> = new EventEmitter();
+
+  protected imge:string = '';
+
+  constructor(
+    private commonFunctionsService:CommonFunctionsService
+  ) {
+  }
+
+  ngOnInit() {
+    if(this.previewImageFile){
+      this.fileToBase64(this.previewImageFile).then((value) => {
         if(value){
-          this.previewImage = value;
+          this.imge = value.toString();
         }
       }).catch(reason => {
         console.log(reason)
@@ -29,7 +39,25 @@ export class ImageUploaderComponent {
     }
   }
 
-  fileToBase64(file: File) {
+  protected fileChangeFileEvent(event: any): void {
+
+    const file:File = event.target.files[0];
+    // this.passEntryImage.emit(file);
+    if (file) {
+      this.fileToBase64(file).then((value) => {
+        if(value){
+          let val = value.toString().split(',')[1];
+          const imageBlob = this.commonFunctionsService.dataURItoBlob(val);
+          let imageFile: File = new File([imageBlob], file.name, {type: file.type});
+          this.passEntryImage.emit(imageFile);
+        }
+      }).catch(reason => {
+        console.log(reason)
+      });
+    }
+  }
+
+ private fileToBase64(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);

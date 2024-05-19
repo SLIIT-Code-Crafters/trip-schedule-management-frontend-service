@@ -1,22 +1,25 @@
-
+<!-- <div class="col">
+  <div class="input-group mb-3 adding-btn">
+  <button class="btn btn-primary" type="button" (click)="addOption()">Add Option</button>
+  </div>
+</div> -->
 <div class="page-container">
   <div class="container sub-container">
     <div class="container">
+      <button routerLink="/post-log/organize" class="back-btn-clz"><i class="bi bi-arrow-left-circle"></i> Back</button>
       <div class="table-action-card">
-        <div class="sub-title">
-          <h4>Create Trip</h4>
+        <div class="sub-title"><h4>Create Trip</h4>
         </div>
         <div class="container row table-action-set">
           <form [formGroup]="createTripForm">
             <div class="row mb-3 single-row">
               <label for="inputTripCategory" class="form-label">Trip Category</label>
-              <select class="form-control custom-input" id="inputTripCategory" #catVal  (change)="getChangeTripCategory(catVal.value)"
+              <select class="form-control custom-input" id="inputTripCategory" name="tripCategoryList" formControlName="tripCategoryList"
               [ngClass]="(getFormTripCategoryList?.touched && !getFormTripCategoryList?.disabled)?(getFormTripCategoryList?.valid)?'is-valid':'is-invalid':''">
                 <option value="" selected>-- Select Trip Category --</option>
-                <option *ngFor="let category of tripCategoryList" [value]="category.id">{{category.description}}</option>
+                <option *ngFor="let category of tripCategoryList"  [value]="category.id">{{category.description}}</option>
               </select>
-
-              <div class="invalid-feedback" id="inputTripCategoryFeedback"
+            <div class="invalid-feedback" id="inputTripCategoryFeedback"
                    *ngIf="getFormTripCategoryList?.errors?.['required'] || getFormTripCategoryList?.errors?.['whitespace']">Trip Category is Required
               </div>
             </div>
@@ -63,7 +66,10 @@
                 </div>
               </div>
             </div>
-           
+            <!-- <div class="row mb-3 single-row">
+              <label for="formFile" class="form-label">Upload Media</label>
+                <input class="form-control" type="file" id="formFile">
+            </div> -->
             <div class="row mb-3 single-row">
               <label for="inputClosingDate" class="form-label">Reservation Closing Date</label>
               <input type="date" class="form-control custom-input" id="inputClosingDate" name="reservationCloseDate" formControlName="reservationCloseDate" maxlength="200"
@@ -91,8 +97,9 @@
 
             <div class="col">
               <div class="input-group mb-3 adding-btn">
-                <button class="btn btn-primary cuz-blue-btn" type="button" (click)="addMedia()">Add Media</button>
-                <button class="btn btn-primary cuz-blue-btn" type="button" (click)="addOption()">Add Option</button>
+                <button class="btn btn-primary cuz-blue-btn" type="button" (click)="addMedia()">
+                  {{(openTask==VIEW_TASK)?'View':(openTask==UPDATE_TASK)?'Update':'Add'}} Media</button>
+                <button *ngIf="openTask != VIEW_TASK" class="btn btn-primary cuz-blue-btn" type="button" (click)="addOption()">Add Option</button>
               </div>
             </div>
 
@@ -115,16 +122,27 @@
               </div>
             </div>
 
-            <div class="col">
+            <div class="col" *ngIf="openTask != VIEW_TASK">
               <div class="modal-footer">
-                <button type="button" (click)="clickPublish()" class="btn btn-primary cuz-blue-btn px-4 w-25 custom-button-green">
+                <button type="button" [disabled]="createTripForm.invalid" (click)="clickPublish()" class="btn btn-primary cuz-blue-btn px-4 w-25 custom-button-green">
                   Publish
                 </button>
               </div>
             </div>
 
           </form>
-         
+          <!-- <div class="col">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control custom-input" placeholder="Search..." [(ngModel)]="searchText"  maxlength="200">
+              <button class="btn btn-warning" type="button" (click)="searchItems()"><i class="bi bi-search"></i> Search</button>
+            </div>
+          </div> -->
+
+          <!-- <div class="col">
+            <div class="input-group mb-3 adding-btn">
+              <button class="btn btn-primary" type="button" (click)="addOption()">Add Option</button>
+            </div>
+          </div> -->
         </div>
       </div>
       <div class="table-action-card">
@@ -150,9 +168,9 @@
             <div class="actions">
               <a><i class="bi bi-eye" aria-hidden="true" title="View"
                     (click)="viewOption(row)"></i></a>
-              <a><i class="bi bi-pencil-square  text-success" aria-hidden="true" title="Edit"
+              <a *ngIf="openTask != VIEW_TASK"><i class="bi bi-pencil-square  text-success" aria-hidden="true" title="Edit"
                     (click)="updateOption(row)"></i></a>
-              <a><i class="bi bi-trash3 text-danger" aria-hidden="true" title="Delete"
+              <a *ngIf="openTask == ADD_TASK"><i class="bi bi-trash3 text-danger" aria-hidden="true" title="Delete"
                     (click)="removeOption(row)"></i></a>
             </div>
           </ng-template>

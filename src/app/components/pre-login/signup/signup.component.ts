@@ -66,39 +66,44 @@ export class SignupComponent {
   }
 
   signup() {
-    const data = {
-      firstName: this.signupForm.get('firstname')?.value,
-      lastName: this.signupForm.get('lastname')?.value,
-      email: this.signupForm.get('email')?.value,
-      userName: this.signupForm.get('username')?.value,
-      salutation: this.signupForm.get('salutation')?.value,
-      contactNo: this.signupForm.get('contactNumber')?.value,
-      password: this.signupForm.get('password')?.value,
-      role: this.signupForm.get('role')?.value,
-      masterToken: this.signupForm.get('masterToken')?.value,
-    };
-    this.AuthServiceService.signup(data).subscribe({
-      next: (res) => {
-        if (res.status == SUCCESS_CODE) {
-          this.commonFunctionsService.showAlertSuccess(res.message);
-          this.authToken = res.data.authToken;
-          this.storageService.setToken(this.authToken);
-          let user: User = new User();
-          user.email = res.data.email;
-          user.role = res.data.role;
-          user.masterToken = res.data.masterToken;
-          user.activatedUser = false;
-          this.storageService.setUserSession(user);
-          this.router.navigate(['/pre-log/activation']);
-        } else {
-          this.commonFunctionsService.showAlertWorn(res.message);
+    if (!this.signupForm.hasError('passwordMismatch')) {
+      console.log('in form')
+      const data = {
+        firstName: this.signupForm.get('firstname')?.value,
+        lastName: this.signupForm.get('lastname')?.value,
+        email: this.signupForm.get('email')?.value,
+        userName: this.signupForm.get('username')?.value,
+        salutation: this.signupForm.get('salutation')?.value,
+        contactNo: this.signupForm.get('contactNumber')?.value,
+        password: this.signupForm.get('password')?.value,
+        role: this.signupForm.get('role')?.value,
+        masterToken: this.signupForm.get('masterToken')?.value,
+      };
+      this.AuthServiceService.signup(data).subscribe({
+        next: (res) => {
+          if (res.status == SUCCESS_CODE) {
+            this.commonFunctionsService.showAlertSuccess(res.message);
+            this.authToken = res.data.authToken;
+            this.storageService.setToken(this.authToken);
+            let user: User = new User();
+            user.email = res.data.email;
+            user.firstName = res.data.firstName;
+            user.lastName = res.data.lastName;
+            user.role = res.data.role;
+            user.masterToken = res.data.masterToken;
+            user.activatedUser = false;
+            this.storageService.setUserSession(user);
+            this.router.navigate(['/pre-log/activation']);
+          } else {
+            this.commonFunctionsService.showAlertWorn(res.message);
+          }
+        }, error: (err) => {
+          if (err.error && err.error.message) {
+            this.commonFunctionsService.showAlertError(err.error.message);
+          }
         }
-      }, error: (err) => {
-        if (err.error && err.error.message) {
-          this.commonFunctionsService.showAlertError(err.error.message);
-        }
-      }
-    });
+      });
+    }
   }
 
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
