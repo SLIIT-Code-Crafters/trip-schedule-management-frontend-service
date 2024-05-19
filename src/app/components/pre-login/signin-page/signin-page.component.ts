@@ -12,7 +12,7 @@ import {User} from "../../../model/User";
 import {of, switchMap} from "rxjs";
 import {UserDetails} from "../../../model/UserDetails";
 import { MatDialog } from '@angular/material/dialog'; // Import MatDialog
-import { ForgotPasswordComponent } from '/Users/charithbanneheka/Documents/SLIIT/MSc in Information Technology/Year 01/Semester 01/IT5030 - Software Engineering Practices/Trip Schedule and Management System/Workspace/trip-schedule-management-frontend-service/src/app/forgot-password/forgot-password.component'; // Import ForgotPasswordDialogComponent
+import { ForgotPasswordComponent } from 'src/app/forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-signin-page',
